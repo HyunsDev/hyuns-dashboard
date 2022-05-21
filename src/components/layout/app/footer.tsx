@@ -5,7 +5,7 @@ const Divver = styled.div`
     width: 100vw;
 
     background-color: var(--gray2);
-    border-top: solid 1px var(--gray3);
+    border-top: solid 1px var(--gray4);
 `
 
 interface FooterProps {
