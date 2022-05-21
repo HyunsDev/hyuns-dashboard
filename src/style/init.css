@@ -1,0 +1,28 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    line-height: 1.5;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+:root {
+    --gray1: #fcfcfc;
+    --gray2: #FAFAFA;
+    --gray3: #E7E7E7;
+    --gray4: #D8D8D8;
+    --gray5: #AAAAAA;
+    --gray6: #444650;
+
+    --blue1: #FAFCFF;
+    --blue2: #ECF3FE;
+    --blue2-hover: #dde8fa;
+    --blue3: #C9DEFF;
+    --blue4: #77ACFF;
+    --blue5: #3359FC;
+
+    --status-red: #D8504A;
+    --status-yellow: #FAAF00;
+    --status-green: #39B75D;
+    --status-blue: #2097F6;
+}
