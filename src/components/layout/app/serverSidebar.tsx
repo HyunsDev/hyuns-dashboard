@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import { Logo } from "../../logo";
+import { ToolTip } from "../../tooltip";
 
 
 const Divver = styled.div`
     width: 58px;
+    min-width: 58px;
     height: 100%;
     background-color: var(--gray1);
     padding: 8px 0px;
@@ -23,7 +25,6 @@ const ServerIcon = styled.div`
     width: 40px;
     height: 40px;
     box-sizing: content-box;
-
     border: solid 4px var(--blue1);
 
     &:hover {
@@ -52,9 +53,12 @@ export function ServerSidebar(props: ServerSidebarProps) {
 
     return (
         <Divver>
-            <ServerIcon>
-                <Logo size={40} isRounded />
-            </ServerIcon>
+            <ToolTip text="Hyuns Dashboard" direction="right">
+                <ServerIcon>
+                    <Logo size={40} isRounded />
+                </ServerIcon>
+            </ToolTip>
+            
             <ServerIconLine />
         </Divver>
     );

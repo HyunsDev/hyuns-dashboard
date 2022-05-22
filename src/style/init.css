@@ -4,11 +4,23 @@
     box-sizing: border-box;
     line-height: 1.5;
     font-family: 'Noto Sans KR', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available; 
+
+    max-height: 80vh;
+    /* max-height: -webkit-fill-available;  */
+
+    /* overflow: hidden; */
 }
 
 :root {
     --gray1: #fcfcfc;
     --gray2: #FAFAFA;
+    --gray2-hover: #f1f1f1;
     --gray3: #E7E7E7;
     --gray4: #D8D8D8;
     --gray5: #AAAAAA;

@@ -2,6 +2,7 @@ import styled from "styled-components"
 
 const Divver = styled.div`
     height: 22px;
+    min-height: 22px;
     width: 100vw;
 
     background-color: var(--gray2);
