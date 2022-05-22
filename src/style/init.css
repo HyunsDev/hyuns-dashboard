@@ -7,15 +7,23 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+html {
+    --vh: 100vh;
+}
+
 body {
-    min-height: 100vh;
+    /* min-height: 100vh;
     min-height: -webkit-fill-available; 
 
-    max-height: 80vh;
+    max-height: 80vh; */
     /* max-height: -webkit-fill-available;  */
 
-    /* overflow: hidden; */
+    overflow: hidden;
 }
+
+/* * {
+    outline: solid 1px #2097F6;
+} */
 
 :root {
     --gray1: #fcfcfc;

@@ -1,7 +1,6 @@
 import styled from "styled-components"
-import { Routes, Route, useNavigate } from "react-router-dom"
+import { Routes, Route } from "react-router-dom"
 import { ServerSidebar, Footer, Sidebar } from "../../components/layout/app"
-import { useEffect, useState } from "react"
 
 import { ChannelRouter } from "./channel/channelRouter"
 
@@ -10,7 +9,7 @@ const Divver = styled.div`
 `
 
 const ContextLayout = styled.div`
-    height: 100%;
+    height: calc(var(--vh) * 100 - 22px);
     width: 100%;
     display: flex;
 `
