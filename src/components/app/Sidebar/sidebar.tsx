@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { ServerInfo } from "./sidebar/serverInfo";
-import { Channels } from "./sidebar/channels";
-import { UserInfo } from "./sidebar/userInfo";
+import { ServerInfo } from "./serverInfo";
+import { Channels } from "./channels";
+import { UserInfo } from "./userInfo";
 import { PuzzlePiece, Bell, Database, Folder, HardDrives } from 'phosphor-react'
 
 

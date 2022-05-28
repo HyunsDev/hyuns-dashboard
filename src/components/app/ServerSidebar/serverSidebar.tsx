@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { Logo } from "../../logo";
-import { ToolTip } from "../../tooltip";
+import { Logo } from "../../Logo/logo";
+import { ToolTip } from "../../Tooltip/tooltip";
 
 
 const Divver = styled.div`

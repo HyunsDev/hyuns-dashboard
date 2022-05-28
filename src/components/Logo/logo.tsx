@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import LogoFile from '../assets/logo.png'
+import LogoFile from '../../assets/logo.png'
 
 interface LogoProps {
     isRounded?: boolean,
@@ -11,8 +11,6 @@ const Img = styled.img<LogoProps>`
     height: ${props => props.size}px;
     border-radius: ${props => props.isRounded ? props.size : 0}px;
 `
-
-
 
 export function Logo(props: LogoProps) {
     return (

@@ -1,18 +1,20 @@
 import styled from "styled-components";
-import { CenterLayout } from "../../components/layout";
-import { Logo } from "../../components/logo";
+import { CenterLayout } from "../../components/Layout";
+import { Logo } from "../../components/Logo/logo";
 import { useContext, useEffect, useState } from "react";
 
-import { TextField, Button } from "../../components/inputs";
+import { TextField, Button } from "../../components/Input";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { TopLoadingContext } from "../../context/topLoadingBarContext";
 
 const Divver = styled.div`
+    height: calc(var(--vh) * 100);
     width: 350px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 8px;
 `
 
@@ -41,7 +43,7 @@ export function LoginScreen() {
             })
             localStorage.setItem('token', response.data.token)
             progress.setProgress(100)
-            navigate('/dashboard')
+            navigate('/app')
         } catch (err:any) {
             progress.setProgress(100)
             if (err.response) {

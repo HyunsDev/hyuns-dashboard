@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { Routes, Route } from "react-router-dom"
-import { ServerSidebar, Footer, Sidebar } from "../../components/layout/app"
+import { ServerSidebar, Footer, Sidebar } from "../../components/app"
 
 import { ChannelRouter } from "./channel/channelRouter"
 

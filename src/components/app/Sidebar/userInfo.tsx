@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Gear } from 'phosphor-react'
-import { ToolTip } from "../../../tooltip";
+import { ToolTip } from "../../Tooltip/tooltip";
 
 interface UserInfoProps {
     title: string;

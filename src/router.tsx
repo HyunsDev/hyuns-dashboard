@@ -5,8 +5,11 @@ import styled from "styled-components";
 
 import './style/transition.css'
 
-import { LoginScreen } from "./screen/login/login";
-import { AppRouter } from "./screen/app/app";
+import { LoginScreen } from "./pages/login/login";
+import { AppRouter } from "./pages/app/app";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { instance } from "./utils/axios";
 
 
 
@@ -30,6 +33,13 @@ const DefaultChannel = () => {
 }
 
 export function Router(props: RouterProps) {
+    useEffect(() => {
+        instance.interceptors.response.use(() => {}, err => {
+            console.error(err.response)
+            toast.error(`요청에 오류가 발생했어요. ${err.response.status}`)
+        })
+    }, [])
+
     return (
         <Divver>
             <BrowserRouter>

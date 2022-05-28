@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
-import { HorizonLNB } from "../../../components/channel/horizonLNB";
+import { HorizonLNB } from "../../../../components/LNB/horizonLNB";
+import { DashboardTab } from "./dashboardTab";
 
 const Divver = styled.div`
     width: 100%;
@@ -33,6 +34,10 @@ export function DashboardChannel(props: DashboardChannelProps) {
             }}
             selected={tabId}
             />
+            <Routes>
+                <Route path="/" element={<DashboardTab />} />
+                <Route path="/widget" element={<>아직 개발중입니다 :(</>} />
+            </Routes>
         </Divver>
     )
 }
