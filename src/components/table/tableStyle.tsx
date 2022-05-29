@@ -17,8 +17,6 @@ const TableStyle = styled.table`
     }
 
     td {
-        border-top: 1px solid var(--gray4);
-        border-bottom: 1px solid var(--gray4);
         box-sizing: border-box;
 
         img {
@@ -32,6 +30,7 @@ const TableStyle = styled.table`
         align-items: center;
         box-sizing: border-box;
         padding: 4px 8px;
+        border-bottom: 1px solid var(--gray4);
         
         div {
             overflow: hidden;

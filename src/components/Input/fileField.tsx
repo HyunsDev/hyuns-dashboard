@@ -3,11 +3,8 @@ import styled from "styled-components"
 
 
 interface TextFieldProps {
-    type: 'text' | 'password' | 'search' | 'url'
-    value: string
+    value: any
     onChange: Function
-    placeholder?: string
-    readonly?: boolean
     label?: string
     error?: boolean
     message?: string
@@ -18,7 +15,7 @@ const Divver = styled.div`
 
 `
 
-const Input = styled.input<TextFieldProps>`
+const Input = styled.input`
     display: block;
     width: 100%;
     border: solid 2px var(--gray3);
@@ -48,11 +45,11 @@ const Message = styled.div<{error: boolean}>`
     margin-top: 4px;
 `
 
-export function TextField(props:TextFieldProps) {
+export function FileField(props:TextFieldProps) {
     return (
         <Divver>
             {props.label && (<Label>{props.label}</Label>)}
-            <Input {...props} onChange={(e) => props.onChange(e.target.value)} />
+            <Input type={'file'} onChange={(e) => props.onChange(e.target?.files?.[0])} />
             { props.message && (<Message error={props.error || false}>{props.message}</Message>)}
         </Divver>
     )

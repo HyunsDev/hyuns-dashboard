@@ -68,7 +68,7 @@ export function Channels(props: ChannelsProps) {
     const [ isShowSelectedChannelBackgroundHoverTop, setShowSelectedChannelBackgroundHoverTop ] = useState(false)
 
     useEffect(() => {
-        setSelectedChannelBackgroundTop(targets.current[selectedChannelId].getBoundingClientRect().top - DivRef.current.getBoundingClientRect().top)
+        setSelectedChannelBackgroundTop(targets.current[selectedChannelId]?.getBoundingClientRect().top - DivRef.current?.getBoundingClientRect().top)
     }, [selectedChannelId])
 
     useEffect(() => {

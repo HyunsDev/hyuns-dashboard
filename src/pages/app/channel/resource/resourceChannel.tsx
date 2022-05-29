@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useTable, useFlexLayout } from 'react-table';
-import { Trash, HighlighterCircle } from 'phosphor-react'
+import { Trash, Download } from 'phosphor-react'
 import styled from "styled-components";
 import { SearchBox } from "../../../../components/search/searchBox";
 import { useQuery } from "react-query";
@@ -10,9 +10,8 @@ import { H1, TabDivver } from "../../../../components/Tab";
 import { Table } from "../../../../components/table/tableStyle";
 import { Button } from "../../../../components/Input";
 import { ModalContext } from "../../../../context/modalContext";
-import { CreateModalModalView } from "./createVarModal";
-import { RemoveModalModalView } from "./removeVarModal";
-import { EditModalModalView } from "./editVarModal";
+import { CreateModalModalView } from "./createResourceModal";
+import { RemoveModalModalView } from "./removeResourceModal";
 
 
 const Divver = styled.div`
@@ -34,86 +33,81 @@ const DeleteButton = styled.div`
     cursor: pointer;
 `
 
-export function VarChannel() {
-    const [ searchText, setSearchText ] = useState('')
+function formatBytes(bytes: number, decimals = 2) {
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
+export function ResourceChannel() {
+    const [searchText, setSearchText] = useState('')
     const modal = useContext(ModalContext)
 
-    const { isLoading: varLoading, data: varData, refetch } = useQuery(['var'], async () => {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/var`, {
+    const { isLoading, data, refetch } = useQuery(['resource'], async () => {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/resource`, {
             headers: {
                 Authorization: localStorage.getItem('token') || ''
             }
         })
-        return res.data
+        return res.data.fileList.Contents
     })
 
-    const createVar = useCallback(() => {
+    const createVar = () => {
         modal.open(<CreateModalModalView close={modal.close} refetch={refetch} />)
-    }, [modal, refetch])
+    }
 
     const removeVar = useCallback((key: string) => {
-        modal.open(<RemoveModalModalView varKey={key} close={modal.close} refetch={refetch} />)
-    }, [modal, refetch])
-
-    const editVar = useCallback((initValue: {
-        key: string
-        value: string,
-        isPublic: boolean,
-        isEncrypted: boolean,
-        img?: string
-    }) => {
-        modal.open(<EditModalModalView close={modal.close} refetch={refetch} initValue={initValue} />)
+        modal.open(<RemoveModalModalView resourceKey={key} close={modal.close} refetch={refetch} />)
     }, [modal, refetch])
 
     const columns = useMemo(() => [
         {
-            accessor: 'img',
-            Header: '',
-            Cell: (row: any) => <img src={row.row.original.img} alt="" className="TableImage"></img>,
-            width: 64,
-            maxWidth: 64
+            accessor: 'Key',
+            Header: '키',
+            
         },
         {
-            accessor: 'key',
-            Header: '키',
+            accessor: 'LastModified',
+            Header: '마지막 수정',
             width: 100,
             maxWidth: 200,
         },
         {
-            accessor: 'value',
-            Header: '값'
-        },
-        {
-            accessor: 'isPublic',
-            Header: '공개',
+            accessor: 'Size',
+            Header: '크기',
             width: 80,
             maxWidth: 80,
-            Cell: (row: any) => <>{row.row.original.isPublic ? '공개' : '비공개'}</>,
+            Cell: (row: any) => <>{formatBytes(row.row.original.Size)}</>,
         },
         {
-            accessor: 'edit',
+            accessor: 'download',
             Header: '',
             width: 36,
             maxWidth: 36,
-            Cell: (row: any) => <DeleteButton onClick={() => editVar(row.row.original)}><HighlighterCircle size={20} weight="fill" color="var(--gray5)" /></DeleteButton>,
+            Cell: (row: any) => <DeleteButton onClick={() => window.open(`https://s3.hyuns.dev/${row.row.original.Key}`)}><Download size={20} weight="fill" color="var(--gray5)" /></DeleteButton>,
         },
         {
             accessor: 'delete',
             Header: '',
             width: 36,
             maxWidth: 36,
-            Cell: (row: any) => <DeleteButton onClick={() => removeVar(row.row.original.key)}><Trash size={20} weight="fill" color="var(--gray5)" /></DeleteButton>,
+            Cell: (row: any) => <DeleteButton onClick={() => removeVar(row.row.original.Key)}><Trash size={20} weight="fill" color="var(--gray5)" /></DeleteButton>,
         },
         
-    ], [editVar, removeVar])
+    ], [removeVar])
 
     const { getTableProps, headerGroups, rows, prepareRow } = useTable(
         {
             columns,
-            data: varLoading ? [] : varData.filter((e:any) => {
+            data: isLoading ? [] : data.filter((e:any) => {
                 if (searchText === "") return true
-                if (e.key.toUpperCase().includes(searchText.toUpperCase())) return true
-                if (e.value.toUpperCase().includes(searchText.toUpperCase())) return true
+                if (e.Key.toUpperCase().includes(searchText.toUpperCase())) return true
                 return false
             }),
         },
@@ -123,10 +117,10 @@ export function VarChannel() {
     return (
         <Divver>
             <TabDivver>
-                <H1>변수</H1>
+                <H1>리소스</H1>
                 <Buttons>
                     <SearchBox value={searchText} onChange={setSearchText} />
-                    <Button label="변수 생성" onClick={createVar} type={'button'} color='black' />
+                    <Button label="리소스 업로드" onClick={createVar} type={'button'} color='black' />
                 </Buttons>
                 <Table {...getTableProps()}>
                     <thead>

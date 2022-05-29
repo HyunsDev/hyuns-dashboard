@@ -18,13 +18,15 @@ const Divver = styled.div`
 
 `
 
-const Input = styled.input<TextFieldProps>`
+const Input = styled.textarea<TextFieldProps>`
     display: block;
     width: 100%;
-    border: solid 2px var(--gray3);
     border-radius: 4px;
     padding: 6px 12px;
-    transition: 100ms;
+    resize: vertical;
+    height: 100px;
+
+    transition: 100ms, height 0ms;
     border: solid 1px var(--gray4);
     outline: solid 0px var(--blue3);
 
@@ -48,12 +50,12 @@ const Message = styled.div<{error: boolean}>`
     margin-top: 4px;
 `
 
-export function TextField(props:TextFieldProps) {
+export function TextArea(props:TextFieldProps) {
     return (
         <Divver>
-            {props.label && (<Label>{props.label}</Label>)}
+            {props.label && <Label>{props.label}</Label>}
             <Input {...props} onChange={(e) => props.onChange(e.target.value)} />
-            { props.message && (<Message error={props.error || false}>{props.message}</Message>)}
+            { props.message && <Message error={props.error || false}>{props.message}</Message>}
         </Divver>
     )
 }

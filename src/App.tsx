@@ -6,6 +6,7 @@ import { useEffect } from "react";
 
 import UserContextProvider from "./context/userContext";
 import TopLoadingContextProvider from "./context/topLoadingBarContext";
+import ModalContextProvider from "./context/modalContext";
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -46,7 +47,9 @@ function App() {
           <ReactQueryDevtools initialIsOpen={true} />
           <UserContextProvider>
             <TopLoadingContextProvider>
-              <Router />
+              <ModalContextProvider>
+                <Router />
+              </ModalContextProvider>
             </TopLoadingContextProvider>
           </UserContextProvider>
         </QueryClientProvider>

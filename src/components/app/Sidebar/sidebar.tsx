@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { ServerInfo } from "./serverInfo";
 import { Channels } from "./channels";
 import { UserInfo } from "./userInfo";
-import { PuzzlePiece, Bell, Database, Folder, HardDrives } from 'phosphor-react'
+import { PuzzlePiece, Bell, Database, Folder, HardDrives, PaperPlaneTilt  } from 'phosphor-react'
 
 
 import HyunsImg from '../../../assets/hyuns.jpg'
@@ -48,10 +48,15 @@ export function Sidebar(props: SidebarProps) {
                         to: 'var',
                         icon: <Database />
                     },
-                    file: {
+                    resource: {
                         name: '파일',
-                        to: 'file',
+                        to: 'resource',
                         icon: <Folder />
+                    },
+                    lambda: {
+                        name: 'Lambda',
+                        to: 'lambda',
+                        icon: <PaperPlaneTilt />
                     }
                 },
                 {

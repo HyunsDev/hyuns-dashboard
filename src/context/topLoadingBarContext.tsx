@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import LoadingBar from 'react-top-loading-bar'
 
 interface UserContextProps {
@@ -14,6 +14,12 @@ export const TopLoadingContext = createContext<UserContextProps>({
 const TopLoadingContextProvider = ({children}: {children: React.ReactElement}) => {
     const [progress, setProgress] = useState(0)
 
+    useEffect(() => {
+        if (progress === 100) {
+            setProgress(0)
+        }
+    }, [progress])
+
     return (
         <TopLoadingContext.Provider
             value={{
@@ -21,7 +27,7 @@ const TopLoadingContextProvider = ({children}: {children: React.ReactElement}) =
                 setProgress
             }}
         >
-            <LoadingBar color="var(--blue5)" progress={progress} onLoaderFinished={() => setProgress(0)} />
+            <LoadingBar color="var(--blue5)" progress={progress}/>
             {children}
         </TopLoadingContext.Provider>
     )

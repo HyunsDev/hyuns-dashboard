@@ -3,9 +3,9 @@ import styled from "styled-components"
 interface ButtonProps {
     type: 'button' | 'submit'
     label: string;
-    onClick: Function;
+    onClick?: Function;
     disabled?: boolean;
-    color?: 'gray' | 'blue'
+    color?: 'gray' | 'blue' | 'black'
 }
 
 const Divver = styled.div`
@@ -23,7 +23,12 @@ const color = (name?: ButtonProps['color']) => {
             color: 'var(--blue5)',
             backgroundColor: 'var(--blue2)',
             backgroundColorHover: 'var(--blue2-hover)'
-        }
+        },
+        'black': {
+            color: 'var(--gray1)',
+            backgroundColor: 'var(--gray7)',
+            backgroundColorHover: 'var(--gray7)'
+        },
     }
     return list[name || 'gray']
 }
@@ -36,6 +41,7 @@ const Input = styled.input<ButtonProps>`
     padding: 6px 12px;
     transition: 200ms;
     cursor: pointer;
+    /* margin-bottom: 16px; */
 
     color: ${props => color(props.color).color};
     background-color: ${props => color(props.color).backgroundColor};
@@ -52,7 +58,7 @@ const Input = styled.input<ButtonProps>`
 export function Button(props:ButtonProps) {
     return (
         <Divver>
-            <Input {...props} type={"button"} value={props.label} onClick={() => props.onClick()} />
+            <Input {...props} type={props.type} value={props.label} onClick={() => props.onClick && props.onClick()} />
         </Divver>
     )
 }
