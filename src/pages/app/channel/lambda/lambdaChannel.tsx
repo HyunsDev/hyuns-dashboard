@@ -33,18 +33,6 @@ const DeleteButton = styled.div`
     cursor: pointer;
 `
 
-function formatBytes(bytes: number, decimals = 2) {
-    if (bytes === 0) return '0 Bytes';
-
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-}
-
 export function LambdaChannel() {
     const [searchText, setSearchText] = useState('')
     const modal = useContext(ModalContext)
@@ -55,7 +43,6 @@ export function LambdaChannel() {
                 Authorization: localStorage.getItem('token') || ''
             }
         })
-        console.log(res.data)
         return res.data.Functions
     })
 
@@ -101,7 +88,7 @@ export function LambdaChannel() {
     return (
         <Divver>
             <TabDivver>
-                <H1>리소스</H1>
+                <H1>Lambda</H1>
                 <Buttons>
                     <SearchBox value={searchText} onChange={setSearchText} />
                     <Button label="AWS 람다" onClick={() => window.open('https://ap-northeast-2.console.aws.amazon.com/lambda/home?region=ap-northeast-2#/functions')} type={'button'} color='black' />

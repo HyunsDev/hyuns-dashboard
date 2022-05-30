@@ -44,6 +44,7 @@ export function Router(props: RouterProps) {
         <Divver>
             <BrowserRouter>
                 <Routes>
+                    <Route path="/" element={<DefaultChannel />}/>
                     <Route path="/app/" element={<DefaultChannel />}/>
                     <Route path="/app/:serverId/*" element={<AppRouter />}/>
                     <Route path="/login" element={<LoginScreen />}/>

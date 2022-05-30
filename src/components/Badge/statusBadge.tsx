@@ -49,12 +49,14 @@ const Badge = styled.div<{color: 'red' | 'yellow' | 'green' | 'blue'}>`
 `
 
 export function StatusBadge() {
-    const { isError, isLoading,  data } = useQuery(['serversStatus'], async () => {
+    const { isError, isLoading,  data } = useQuery(['server'], async () => {
+        console.log(1)
         const res = await axios.get(`${process.env.REACT_APP_API_URL}/server`, {
             headers: {
                 Authorization: localStorage.getItem('token') || ''
             }
         })
+        console.log(res.data)
         return res.data
     })
 
@@ -74,11 +76,24 @@ export function StatusBadge() {
         )
     }
 
-    const res = data.reduce((acc:boolean, cur:any) => acc && (cur.svStatus === 'good'), true)
+    const res = data.reduce((acc:boolean, cur:any) => acc && (cur.lastCheckStatus === 'good'), true)
 
     return (
         <Badge color={res ? 'green' : 'red'}>
             {res ? 'normal' : 'error'}
+        </Badge>
+    )
+}
+
+interface StatusBadgeTagProps {
+    color: 'green' | 'yellow' | 'red' | 'blue'
+    text: string
+}
+
+export function StatusBadgeTag(props: StatusBadgeTagProps) {
+    return (
+        <Badge color={props.color}>
+            {props.text}
         </Badge>
     )
 }

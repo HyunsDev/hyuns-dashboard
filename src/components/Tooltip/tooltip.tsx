@@ -28,6 +28,7 @@ const Divver = styled.div`
     width: fit-content;
     height: fit-content;
     position: relative;
+    z-index: 10;
     
     &:hover {
         ${ToolTipBox} {
@@ -115,10 +116,9 @@ export function ToolTip(props: ToolTipProps) {
             <ToolTipBoxTop>{props.text}</ToolTipBoxTop>
             break
     }
-    
 
     return (
-        <Divver>
+        <Divver className="tooltip">
             {box}
             {props.children}
         </Divver>

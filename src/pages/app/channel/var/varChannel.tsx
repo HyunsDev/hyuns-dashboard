@@ -10,9 +10,9 @@ import { H1, TabDivver } from "../../../../components/Tab";
 import { Table } from "../../../../components/table/tableStyle";
 import { Button } from "../../../../components/Input";
 import { ModalContext } from "../../../../context/modalContext";
-import { CreateModalModalView } from "./createVarModal";
-import { RemoveModalModalView } from "./removeVarModal";
-import { EditModalModalView } from "./editVarModal";
+import { CreateModalView } from "./createVarModal";
+import { RemoveModalView } from "./removeVarModal";
+import { EditModalView } from "./editVarModal";
 
 
 const Divver = styled.div`
@@ -48,11 +48,11 @@ export function VarChannel() {
     })
 
     const createVar = useCallback(() => {
-        modal.open(<CreateModalModalView close={modal.close} refetch={refetch} />)
+        modal.open(<CreateModalView close={modal.close} refetch={refetch} />)
     }, [modal, refetch])
 
     const removeVar = useCallback((key: string) => {
-        modal.open(<RemoveModalModalView varKey={key} close={modal.close} refetch={refetch} />)
+        modal.open(<RemoveModalView varKey={key} close={modal.close} refetch={refetch} />)
     }, [modal, refetch])
 
     const editVar = useCallback((initValue: {
@@ -62,7 +62,7 @@ export function VarChannel() {
         isEncrypted: boolean,
         img?: string
     }) => {
-        modal.open(<EditModalModalView close={modal.close} refetch={refetch} initValue={initValue} />)
+        modal.open(<EditModalView close={modal.close} refetch={refetch} initValue={initValue} />)
     }, [modal, refetch])
 
     const columns = useMemo(() => [

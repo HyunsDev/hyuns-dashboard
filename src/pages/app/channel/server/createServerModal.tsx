@@ -15,10 +15,11 @@ interface ModalViewProps {
 }
 
 interface Form {
-    key: string,
-    value: string,
-    isPublic: boolean,
-    isEncrypted: boolean,
+    id: string,
+    name: string,
+    url: string
+    checkUrl: string
+    memo?: string
     img?: string
 }
 
@@ -39,19 +40,20 @@ export function CreateModalView(props:ModalViewProps) {
 
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
-            key: '',
-            value: '',
-            isPublic: false,
-            isEncrypted: false,
-            img: 'https://static.hyuns.dev/dashboard/logo.png'
+            id: '',
+            name: '',
+            url: '',
+            checkUrl: '',
+            memo: '',
+            img: ''
         }
     });
 
     const onSubmit = async (data:Form) => {
-        const { key, value, isPublic, isEncrypted, img } = data
+        const { id, name, url, checkUrl, memo, img } = data
         try {
-            await axios.post(`${process.env.REACT_APP_API_URL}/var`, {
-                key, value, isPublic, isEncrypted, img
+            await axios.post(`${process.env.REACT_APP_API_URL}/server`, {
+                id, name, url, checkUrl, memo, img
             }, {
                 headers: {
                     Authorization: localStorage.getItem('token') || ''
@@ -68,36 +70,44 @@ export function CreateModalView(props:ModalViewProps) {
     return (
         <>
             <ModalTitleBox>
-                <ModalTitle>변수 생성</ModalTitle>
+                <ModalTitle>서버 생성</ModalTitle>
             </ModalTitleBox>
             
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Inputs>
                     <Controller
-                        name="key" 
+                        name="id" 
                         control={control}
                         rules={{required: '칸을 채워주세요'}}
-                        render={({field}) => <TextField {...field} label={'키'} message={errors.key?.message} ref={null} error={!!errors.key?.message} type="text" />}
+                        render={({field}) => <TextField {...field} label={'키'} message={errors.id?.message} ref={null} error={!!errors.id?.message} type="text" />}
                     />
                     <Controller
-                        name="value" 
+                        name="name" 
                         control={control}
-                        render={({field}) => <TextArea {...field} label={'값'} message={errors.value?.message} ref={null} error={!!errors.value?.message} type="text" />}
+                        rules={{required: '칸을 채워주세요'}}
+                        render={({field}) => <TextField {...field} label={'이름'} message={errors.name?.message} ref={null} error={!!errors.name?.message} type="text" />}
+                    />
+                    <Controller
+                        name="url" 
+                        control={control}
+                        rules={{required: '칸을 채워주세요'}}
+                        render={({field}) => <TextField {...field} label={'주소'} message={errors.url?.message} ref={null} error={!!errors.url?.message} type="text" />}
+                    />
+                    <Controller
+                        name="checkUrl" 
+                        control={control}
+                        rules={{required: '칸을 채워주세요'}}
+                        render={({field}) => <TextField {...field} label={'checkUrl'} message={errors.checkUrl?.message} ref={null} error={!!errors.checkUrl?.message} type="text" />}
+                    />
+                    <Controller
+                        name="memo"
+                        control={control}
+                        render={({field}) => <TextField {...field} label={'메모'} message={errors.memo?.message} ref={null} error={!!errors.memo?.message} type="text" />}
                     />
                     <Controller
                         name="img" 
                         control={control}
                         render={({field}) => <TextField {...field} label={'이미지'} ref={null} type="text" />}
-                    />
-                    <Controller
-                        name="isPublic" 
-                        control={control}
-                        render={({field}) => <Checkbox {...field} label='공개 여부' ref={null} />}
-                    />
-                    <Controller
-                        name="isEncrypted" 
-                        control={control}
-                        render={({field}) => <Checkbox {...field} label='암호화 여부' ref={null} />}
                     />
                 </Inputs>
                 <SubmitButtonBox>

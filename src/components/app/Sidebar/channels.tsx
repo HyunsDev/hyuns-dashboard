@@ -37,7 +37,7 @@ const SelectedChannelBackground = styled.div<{top: number}>`
     border-top-right-radius: 14px;
     border-bottom-right-radius: 14px;
     margin-top: 2px;
-    transition: 150ms;
+    transition: 180ms;
 `
 
 const SelectedChannelHoverBackground = styled.div<{top: number, isShow: boolean}>`
@@ -51,7 +51,7 @@ const SelectedChannelHoverBackground = styled.div<{top: number, isShow: boolean}
     border-top-right-radius: 14px;
     border-bottom-right-radius: 14px;
     margin-top: 2px;
-    transition: 100ms;
+    transition: 70ms;
 `
 
 

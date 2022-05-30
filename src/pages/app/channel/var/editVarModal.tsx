@@ -40,7 +40,7 @@ const SubmitButtonBox = styled.div`
     margin-top: 16px;
 `
 
-export function EditModalModalView(props:ModalViewProps) {
+export function EditModalView(props:ModalViewProps) {
     const progress = useContext(TopLoadingContext)
 
     const { control, handleSubmit, formState: { errors } } = useForm({

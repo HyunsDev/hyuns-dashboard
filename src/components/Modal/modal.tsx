@@ -36,6 +36,7 @@ const ModalBox = styled.div<{isOpen: boolean, width: number}>`
     padding: 16px;
     pointer-events: auto;
     min-width: ${props => props.width}px;
+    max-width: 80vw;
 
     transition: 200ms;
     opacity: ${props => props.isOpen ? 1 : 0};

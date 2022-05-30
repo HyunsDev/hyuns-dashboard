@@ -12,14 +12,24 @@ import { toast } from "react-toastify";
 interface ModalViewProps {
     close: Function
     refetch: Function
+    initValue: {
+        id: string,
+        name: string,
+        url: string
+        checkUrl: string
+        memo?: string
+        img?: string,
+        check: boolean,
+    }
 }
 
 interface Form {
-    key: string,
-    value: string,
-    isPublic: boolean,
-    isEncrypted: boolean,
-    img?: string
+    name: string,
+    url: string
+    checkUrl: string
+    memo?: string
+    img?: string,
+    check: boolean,
 }
 
 const Inputs = styled.div`
@@ -34,24 +44,25 @@ const SubmitButtonBox = styled.div`
     margin-top: 16px;
 `
 
-export function CreateModalView(props:ModalViewProps) {
+export function EditModalView(props:ModalViewProps) {
     const progress = useContext(TopLoadingContext)
 
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
-            key: '',
-            value: '',
-            isPublic: false,
-            isEncrypted: false,
-            img: 'https://static.hyuns.dev/dashboard/logo.png'
+            name: props.initValue.name,
+            url: props.initValue.url,
+            checkUrl: props.initValue.checkUrl,
+            img: props.initValue.img || '',
+            check: props.initValue.check,
+            memo: props.initValue.memo || ''
         }
     });
 
     const onSubmit = async (data:Form) => {
-        const { key, value, isPublic, isEncrypted, img } = data
+        const { name, url, checkUrl, check, img, memo } = data
         try {
-            await axios.post(`${process.env.REACT_APP_API_URL}/var`, {
-                key, value, isPublic, isEncrypted, img
+            await axios.patch(`${process.env.REACT_APP_API_URL}/server/${props.initValue.id}`, {
+                name, url, checkUrl, check, img, memo
             }, {
                 headers: {
                     Authorization: localStorage.getItem('token') || ''
@@ -68,21 +79,25 @@ export function CreateModalView(props:ModalViewProps) {
     return (
         <>
             <ModalTitleBox>
-                <ModalTitle>변수 생성</ModalTitle>
+                <ModalTitle>{props.initValue.id} 수정</ModalTitle>
             </ModalTitleBox>
             
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Inputs>
                     <Controller
-                        name="key" 
+                        name="name" 
                         control={control}
-                        rules={{required: '칸을 채워주세요'}}
-                        render={({field}) => <TextField {...field} label={'키'} message={errors.key?.message} ref={null} error={!!errors.key?.message} type="text" />}
+                        render={({field}) => <TextField {...field} label={'이름'} message={errors.name?.message} ref={null} error={!!errors.name?.message} type="text" />}
                     />
                     <Controller
-                        name="value" 
+                        name="url" 
                         control={control}
-                        render={({field}) => <TextArea {...field} label={'값'} message={errors.value?.message} ref={null} error={!!errors.value?.message} type="text" />}
+                        render={({field}) => <TextField {...field} label={'주소'} message={errors.url?.message} ref={null} error={!!errors.url?.message} type="text" />}
+                    />
+                    <Controller
+                        name="checkUrl" 
+                        control={control}
+                        render={({field}) => <TextField {...field} label={'확인용 주소'} message={errors.checkUrl?.message} ref={null} error={!!errors.checkUrl?.message} type="text" />}
                     />
                     <Controller
                         name="img" 
@@ -90,18 +105,18 @@ export function CreateModalView(props:ModalViewProps) {
                         render={({field}) => <TextField {...field} label={'이미지'} ref={null} type="text" />}
                     />
                     <Controller
-                        name="isPublic" 
+                        name="check" 
                         control={control}
-                        render={({field}) => <Checkbox {...field} label='공개 여부' ref={null} />}
+                        render={({field}) => <Checkbox {...field} label='상태 체크 여부' ref={null} />}
                     />
                     <Controller
-                        name="isEncrypted" 
+                        name="memo" 
                         control={control}
-                        render={({field}) => <Checkbox {...field} label='암호화 여부' ref={null} />}
+                        render={({field}) => <TextArea {...field} label={'메모'} message={errors.memo?.message} ref={null} error={!!errors.memo?.message} type="text" />}
                     />
                 </Inputs>
                 <SubmitButtonBox>
-                    <Button label="생성" type="submit" color="black"/>
+                    <Button label="수정" type="submit" color="black"/>
                 </SubmitButtonBox>
             </form>
         </>

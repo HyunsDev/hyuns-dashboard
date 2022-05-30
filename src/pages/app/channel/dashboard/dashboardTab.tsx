@@ -94,7 +94,7 @@ function StatusBox() {
     //     return res.data
     // })
 
-    const { isLoading: serverStatusLoading,  data:serverStatus } = useQuery(['serversStatus'], async () => {
+    const { isLoading: serverStatusLoading,  data:serverStatus } = useQuery(['server'], async () => {
         const res = await axios.get(`${process.env.REACT_APP_API_URL}/server`, {
             headers: {
                 Authorization: localStorage.getItem('token') || ''
@@ -103,7 +103,7 @@ function StatusBox() {
 
         return res.data
     })
-    const res = !serverStatusLoading && serverStatus.reduce((acc:boolean, cur:any) => acc && (cur.svStatus === 'good'), true)
+    const res = !serverStatusLoading && serverStatus.reduce((acc:boolean, cur:any) => acc && (cur.lastCheckStatus === 'good'), true)
     
 
     return (

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { CenterLayout } from "../../components/Layout";
 import { Logo } from "../../components/Logo/logo";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import { TextField, Button } from "../../components/Input";
 import { toast } from "react-toastify";

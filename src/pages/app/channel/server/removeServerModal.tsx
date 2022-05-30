@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 
 
 interface ModalViewProps {
-    varKey: string,
+    serverId: string,
     close: Function,
     refetch: Function
 }
@@ -26,14 +26,13 @@ export function RemoveModalView(props:ModalViewProps) {
 
     const onSubmit = async () => {
         try {
-            await axios.delete(`${process.env.REACT_APP_API_URL}/var/${props.varKey}`, {
+            await axios.delete(`${process.env.REACT_APP_API_URL}/server/${props.serverId}`, {
                 headers: {
                     Authorization: localStorage.getItem('token') || ''
                 }
             })
             props.refetch()
             progress.setProgress(100)
-            progress.setProgress(0)
             props.close()
         } catch(err:any) {
             toast.error(`문제가 발생했어요. ${err.response.status}`)
@@ -43,10 +42,10 @@ export function RemoveModalView(props:ModalViewProps) {
     return (
         <>
             <ModalTitleBox>
-                <ModalTitle>변수를 삭제하시겠어요?</ModalTitle>
+                <ModalTitle>서버를 정말로 삭제하시겠어요?</ModalTitle>
             </ModalTitleBox>
             
-            <div>{props.varKey}</div>
+            <div>{props.serverId}</div>
 
             <SubmitButtonBox>
                 <Button label="삭제" type="button" color="black" onClick={onSubmit}/>

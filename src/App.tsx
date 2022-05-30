@@ -1,5 +1,5 @@
 import { Router } from "./router";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, Flip } from "react-toastify";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { useEffect } from "react";
@@ -35,13 +35,13 @@ function App() {
   return (
     <div className="App">
       <ToastContainer
-        position="top-right"
-        autoClose={5000}
+        position="bottom-right"
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
         draggable
-        pauseOnHover
+        transition={Flip}
       />
         <QueryClientProvider client={queryClient}>
           <ReactQueryDevtools initialIsOpen={true} />
@@ -53,7 +53,6 @@ function App() {
             </TopLoadingContextProvider>
           </UserContextProvider>
         </QueryClientProvider>
-      <ToastContainer />
     </div>
   );
 }

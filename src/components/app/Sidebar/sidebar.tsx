@@ -15,6 +15,7 @@ const Divver = styled.div`
     border-left: solid 1px var(--gray4);
     border-top-left-radius: 12px;
     border-right: solid 1px var(--gray4);
+    border-top: 1px solid #E7E7E7;
 `
 
 const Line = styled.div`
