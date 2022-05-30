@@ -19,7 +19,6 @@ const Divver = styled.div`
 `
 
 interface RouterProps {
-
 }
 
 const DefaultChannel = () => {
