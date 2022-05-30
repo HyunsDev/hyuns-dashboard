@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { CenterLayout } from "../../components/Layout";
+import { CenterLayout } from "../../components/Layout/center";
 import { Logo } from "../../components/Logo/logo";
 import { useContext, useState } from "react";
 
