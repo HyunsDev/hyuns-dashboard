@@ -50,13 +50,11 @@ const Badge = styled.div<{color: 'red' | 'yellow' | 'green' | 'blue'}>`
 
 export function StatusBadge() {
     const { isError, isLoading,  data } = useQuery(['server'], async () => {
-        console.log(1)
         const res = await axios.get(`${process.env.REACT_APP_API_URL}/server`, {
             headers: {
                 Authorization: localStorage.getItem('token') || ''
             }
         })
-        console.log(res.data)
         return res.data
     })
 
