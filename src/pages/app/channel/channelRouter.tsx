@@ -5,6 +5,8 @@ import { VarChannel } from './var/varChannel'
 import { ResourceChannel } from './resource/resourceChannel'
 import { LambdaChannel } from './lambda/lambdaChannel'
 import { ServerChannel } from './server/serverChannel'
+import { MessageChannel } from './message/message'
+
 import styled from 'styled-components'
 
 interface ChannelRouterProps {
@@ -27,6 +29,7 @@ export function ChannelRouter(props: ChannelRouterProps) {
                 <Route path='/resource/*' element={<ResourceChannel />} />
                 <Route path='/lambda/*' element={<LambdaChannel />} />
                 <Route path='/server/*' element={<ServerChannel />} />
+                <Route path='/message/*' element={<MessageChannel />} />
             </Routes>
         </Divver>
     )

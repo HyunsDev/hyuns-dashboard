@@ -44,7 +44,7 @@ function App() {
         transition={Flip}
       />
         <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools initialIsOpen={true} />
+          <ReactQueryDevtools initialIsOpen={false} />
           <UserContextProvider>
             <TopLoadingContextProvider>
               <ModalContextProvider>

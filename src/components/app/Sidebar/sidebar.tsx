@@ -30,7 +30,7 @@ export function Sidebar(props: SidebarProps) {
 
     return (
         <Divver>
-            <ServerInfo title="Hyuns Dashboard" subTitle='dashboard.hyuns.dev' />
+            <ServerInfo title="Hyuns Dashboard" subTitle='dash.hyuns.dev' />
             <Line />
             <Channels channels={[
                 {
@@ -39,9 +39,9 @@ export function Sidebar(props: SidebarProps) {
                         to: 'dashboard',
                         icon: <PuzzlePiece />
                     },
-                    notice: {
-                        name: '알림',
-                        to: 'notice',
+                    message: {
+                        name: '알림 & 메세지',
+                        to: 'message',
                         icon: <Bell />
                     },
                     var: {
@@ -58,7 +58,7 @@ export function Sidebar(props: SidebarProps) {
                         name: 'Lambda',
                         to: 'lambda',
                         icon: <PaperPlaneTilt />
-                    }
+                    },
                 },
                 {
                     server: {

@@ -1,6 +1,6 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import { useTable, useFlexLayout } from 'react-table';
-import { Trash, HighlighterCircle } from 'phosphor-react'
+import { Trash, HighlighterCircle, Code as CodeIcon } from 'phosphor-react'
 import styled from "styled-components";
 import { SearchBox } from "../../../../components/search/searchBox";
 import { useQuery } from "react-query";
@@ -13,6 +13,8 @@ import { ModalContext } from "../../../../context/modalContext";
 import { CreateModalView } from "./createVarModal";
 import { RemoveModalView } from "./removeVarModal";
 import { EditModalView } from "./editVarModal";
+import { ModalTitle, ModalTitleBox } from "../../../../components/Modal/Header";
+import { Code } from "../../../../components/code/code";
 
 
 const Divver = styled.div`
@@ -65,6 +67,15 @@ export function VarChannel() {
         modal.open(<EditModalView close={modal.close} refetch={refetch} initValue={initValue} />)
     }, [modal, refetch])
 
+    const showVar = useCallback((value:any) => {
+        modal.open(<>
+            <ModalTitleBox>
+                <ModalTitle>변수 정보</ModalTitle>
+            </ModalTitleBox>
+            <Code>{JSON.stringify(value, null, 2)}</Code>
+        </>)
+    }, [modal])
+
     const columns = useMemo(() => [
         {
             accessor: 'img',
@@ -89,6 +100,13 @@ export function VarChannel() {
             width: 80,
             maxWidth: 80,
             Cell: (row: any) => <>{row.row.original.isPublic ? '공개' : '비공개'}</>,
+        },
+        {
+            accessor: 'code',
+            Header: '',
+            width: 36,
+            maxWidth: 36,
+            Cell: (row: any) => <DeleteButton onClick={() => showVar(row.row.original)}><CodeIcon size={20} weight="fill" color="var(--gray5)" /></DeleteButton>,
         },
         {
             accessor: 'edit',

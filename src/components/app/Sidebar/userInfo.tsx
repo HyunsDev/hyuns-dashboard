@@ -64,6 +64,11 @@ const SettingDivver = styled.div`
     }
 `
 
+const logout = () => {
+    localStorage.clear()
+    window.location.href = '/login'
+}
+
 export function UserInfo(props: UserInfoProps) {
     return (
         <Divver>
@@ -77,8 +82,8 @@ export function UserInfo(props: UserInfoProps) {
                 </UserNameDivver>
             </UserInfoDivver>
             
-            <ToolTip text="설정" direction="top">
-                <SettingDivver>
+            <ToolTip text="로그아웃" direction="top">
+                <SettingDivver onClick={logout}>
                     <Gear color="var(--gray5)" weight="fill" size={20} />
                 </SettingDivver>
             </ToolTip>

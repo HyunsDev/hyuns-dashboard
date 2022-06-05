@@ -5,6 +5,8 @@ import styled from "styled-components"
 import { instance } from "../../utils/axios"
 import { ErrorBoundary } from 'react-error-boundary'
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const colorMap = {
     green: {
@@ -13,50 +15,56 @@ const colorMap = {
     },
     red: {
         color: "var(--status-red)",
-        backgroundColor: 'var(--status-green-red)'
+        backgroundColor: 'var(--status-red-background)'
     },
     yellow: {
         color: "var(--status-yellow)",
-        backgroundColor: 'var(--status-green-yellow)'
+        backgroundColor: 'var(--status-yellow-background)'
     },
     blue: {
         color: "var(--status-blue)",
-        backgroundColor: 'var(--status-green-blue)'
+        backgroundColor: 'var(--status-yellow-background)'
+    },
+    gray: {
+        color: "var(--gray5)",
+        backgroundColor: 'var(--gray4)'
     },
 }
 
-const Badge = styled.div<{color: 'red' | 'yellow' | 'green' | 'blue'}>`
+const Badge = styled.div<{color: 'red' | 'yellow' | 'green' | 'blue' | 'gray', hideBackground?: boolean}>`
     position: relative;
 
-    background-color: ${props => colorMap[props.color].backgroundColor};
+    ${props => !props.hideBackground && `background-color: ${colorMap[props.color].backgroundColor};` }
     color: ${props => colorMap[props.color].color};
-    padding: 0px 8px;
+    padding: ${props => props.hideBackground ? '0px 0px' : '0px 8px'};
     border-radius: 12px;
     height: 16px;
-    font-size: 12px;
+    font-size: ${props => props.hideBackground ? '14px' : '12px'};
     display: flex;
     align-items: center;
     width: fit-content;
+    font-weight: ${props => props.hideBackground ? '700' : '400'};
 
     &::before {
         content: "";
-        width: 8px;
-        height: 8px;
+        width: ${props => props.hideBackground ? '12px' : '8px'};
+        height: ${props => props.hideBackground ? '12px' : '8px'};
         background-color: ${props => colorMap[props.color].color};
         border-radius: 8px;
         margin-right: 6px;
+        margin-top: 2px;
     }
 `
 
 export function StatusBadge() {
+    const navigate = useNavigate()
+
     const { isError, isLoading,  data } = useQuery(['server'], async () => {
-        console.log(1)
         const res = await axios.get(`${process.env.REACT_APP_API_URL}/server`, {
             headers: {
                 Authorization: localStorage.getItem('token') || ''
             }
         })
-        console.log(res.data)
         return res.data
     })
 
@@ -86,13 +94,14 @@ export function StatusBadge() {
 }
 
 interface StatusBadgeTagProps {
-    color: 'green' | 'yellow' | 'red' | 'blue'
+    color: 'green' | 'yellow' | 'red' | 'blue' | 'gray'
     text: string
+    hideBackground?: boolean
 }
 
 export function StatusBadgeTag(props: StatusBadgeTagProps) {
     return (
-        <Badge color={props.color}>
+        <Badge color={props.color} hideBackground={props.hideBackground}>
             {props.text}
         </Badge>
     )
