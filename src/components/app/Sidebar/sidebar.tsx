@@ -30,7 +30,7 @@ export function Sidebar(props: SidebarProps) {
 
     return (
         <Divver>
-            <ServerInfo title="Hyuns Dashboard" subTitle='dashboard.hyuns.dev' />
+            <ServerInfo title="Hyuns Dashboard" subTitle='dash.hyuns.dev' />
             <Line />
             <Channels channels={[
                 {

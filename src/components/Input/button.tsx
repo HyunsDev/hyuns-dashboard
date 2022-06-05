@@ -62,3 +62,7 @@ export function Button(props:ButtonProps) {
         </Divver>
     )
 }
+
+Button.defaultProps = {
+    type: 'button'
+}

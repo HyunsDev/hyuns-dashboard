@@ -20,17 +20,6 @@ export function MessageChannel(props: ChannelProps) {
         setTapId(location.pathname.split('/')[4] || 'index')
     }, [location.pathname])    
 
-    useEffect(() => {
-        const eventSource = new EventSource(`${process.env.REACT_APP_API_URL}/message/sse`);
-        eventSource.onmessage = (e) => {
-            console.log(e.data)
-        }
-
-        return () => {
-            eventSource.close()
-        }
-    }, [])
-
     return (
         <Divver>
             <HorizonLNB menu={{
