@@ -17,6 +17,10 @@ const Divver = styled.div`
     border-top: 1px solid #E7E7E7;
     box-sizing: border-box;
     width: 100%;
+    @media ( max-width: 767px ) {
+        min-width: 100vw;
+        max-width: 100vw;
+    }
 `
 
 export function ChannelRouter(props: ChannelRouterProps) {

@@ -14,8 +14,6 @@ import { instance } from "./utils/axios";
 
 
 const Divver = styled.div`
-    min-width: 100vw;
-    width: 100vw;
 `
 
 interface RouterProps {

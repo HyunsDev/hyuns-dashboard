@@ -4,7 +4,7 @@ import { StatusBadge } from "../../Badge/statusBadge"
 const Divver = styled.div`
     height: 22px;
     min-height: 22px;
-    width: 100vw;
+    min-width: 100vw;
     padding: 0px 4px;
     background-color: var(--gray2);
     border-top: solid 1px var(--gray4);
