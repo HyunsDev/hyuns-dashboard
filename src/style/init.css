@@ -8,17 +8,11 @@
 }
 
 html {
-    --vh: 100vh;
+    --vh: 1vh;
 }
 
 body {
-    /* min-height: 100vh;
-    min-height: -webkit-fill-available; 
-
-    max-height: 80vh; */
-    /* max-height: -webkit-fill-available;  */
-
-    overflow: hidden;
+    min-height: calc(var(--vh) * 100);
 }
 
 /* * {
