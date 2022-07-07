@@ -101,6 +101,7 @@ function AppScreen() {
     )
 }
 
+// 앱 라우터
 export function AppRouter() {
     const navigate = useNavigate()
 

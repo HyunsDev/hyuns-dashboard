@@ -1,7 +1,9 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import { useTable, useFlexLayout } from 'react-table';
+// import { useTable, useFlexLayout } from 'react-table';
 import { fetchSSE } from "../../../../utils/sse";
+import axios from "axios";
+
 import { ArrowUpRight, Code as CodeIcon, ChatText, X } from 'phosphor-react'
 
 import { TabDivver, H1 } from "../../../../components/Tab";
@@ -10,12 +12,10 @@ import { Button } from "../../../../components/Input";
 import { ModalContext } from "../../../../context/modalContext";
 import { CreateModalView } from "./message/createMessageModal";
 import { useQuery } from "react-query";
-import axios from "axios";
+
 import { ModalTitle, ModalTitleBox } from "../../../../components/Modal/Header";
 import { Code } from "../../../../components/code/code";
 import { StatusBadgeTag } from "../../../../components/Badge/statusBadge";
-import { Table } from "../../../../components/table/tableStyle";
-import { MessageTable } from "../../../../components/table/messageTableStyle";
 import dayjs from "dayjs";
 import { TopLoadingContext } from "../../../../context/topLoadingBarContext";
 
@@ -26,7 +26,7 @@ const Bar = styled.div`
     justify-content: space-between;
 `
 
-const DeleteButton = styled.div`
+const ItemButton = styled.div`
     position: relative;
     display: flex;
     align-items: center;
@@ -36,8 +36,72 @@ const DeleteButton = styled.div`
     opacity: 0;
 `
 
-const TableWrapper = styled(MessageTable)`
-    tr:hover ${DeleteButton} {
+const ItemButtons = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+    @media ( max-width: 767px ) {
+        width: 100%;
+        align-items: flex-end;
+        justify-content: flex-end;
+
+        ${ItemButton} {
+            opacity: 1;
+        }
+    }
+`
+
+const Item = styled.div`
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border-right: solid 1px var(--gray4);
+    border-left: solid 1px var(--gray4);
+    border-top: solid 1px var(--gray4);
+
+    @media ( max-width: 767px ) {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: 16px;
+        gap: 8px;
+    }
+
+
+    &:first-child {
+        border-top: none;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    &:last-child {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+`
+
+const ItemInner = styled.div`
+    display: flex;
+    align-items: center;
+
+    @media ( max-width: 767px ) {
+        gap: 16px;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+`
+
+const Items = styled.div`
+    margin-top: 8px;
+    border-top: solid 1px var(--gray4);
+    border-bottom: solid 1px var(--gray4);
+    border-radius: 8px;
+
+    ${Item}:hover ${ItemButton} {
         opacity: 1;
     }
 `
@@ -46,11 +110,15 @@ const AvatarDiv = styled.div`
     display: flex;
     align-items: center;
     gap: 8px;
+    width: 180px;
 `
 
 const AvatarIcon = styled.img`
     border-radius: 999px;
     background-color: var(--gray4);
+
+    width: 36px;
+    height: 36px;
 `
 
 const AvatarName = styled.div`
@@ -65,7 +133,13 @@ const Time = styled.div`
 `
 
 const StateDiv = styled.div`
-    
+    width: 120px;
+
+    @media ( max-width: 767px ) {
+        position: absolute;
+        bottom: 12px;
+        left: 16px;
+    }
 `
 
 const TypeDiv = styled.div`
@@ -146,80 +220,6 @@ export function MessageTab() {
         progress.setProgress(100)
     }, [progress, refetch])
 
-    const columns = useMemo(() => [
-        {
-            accessor: 'server',
-            Header: '',
-            Cell: (row: any) => (
-                <AvatarDiv>
-                    <AvatarIcon src={row.row.original.avatarIcon} alt="" />
-                    <div>
-                        <AvatarName>{row.row.original.avatarName || '이름 없음'}</AvatarName>
-                        <Time>{dayjs(row.row.original.createdAt).format('YY.MM.DD HH:mm')}</Time>
-                    </div>
-                </AvatarDiv>
-            ),
-            width: 200,
-            maxWidth: 200
-        },
-        {
-            accessor: 'state',
-            Header: '',
-            Cell: (row: any) => (
-                <StateDiv>
-                    <StatusBadgeTag hideBackground color={colorMap(row.row.original.state.toLowerCase())} text={capitalize(row.row.original.state)} />
-                    <TypeDiv>{row.row.original.type}</TypeDiv>
-                </StateDiv>
-            ),
-            width: 160,
-            maxWidth: 160,
-        },
-        {
-            accessor: 'title',
-            Header: '',
-            Cell: (row: any) => (
-                <TitleDiv>
-                    <Title>{row.row.original.title || '(제목 없음)'}</Title>
-                    <SubTitle>{row.row.original.subTitle}</SubTitle>
-                </TitleDiv>
-            ),
-        },
-        {
-            accessor: 'content',
-            Header: '',
-            width: 36,
-            maxWidth: 36,
-            Cell: (row: any) => <DeleteButton onClick={() => showContent(row.row.original.content)}><ChatText size={20} weight="bold" color="var(--gray5)" /></DeleteButton>,
-        },
-        {
-            accessor: 'info',
-            Header: '',
-            width: 36,
-            maxWidth: 36,
-            Cell: (row: any) => <DeleteButton onClick={() => showRAW(row.row.original)}><CodeIcon size={20} weight="bold" color="var(--gray5)" /></DeleteButton>,
-        },
-        {
-            accessor: 'remove',
-            Header: '',
-            width: 36,
-            maxWidth: 36,
-            Cell: (row: any) => <DeleteButton onClick={() => deleteMessage(row.row.original._id)}><X size={20} weight="bold" color="var(--gray5)" /></DeleteButton>,
-        },
-    ], [deleteMessage, showContent, showRAW])
-
-    const { getTableProps, rows, prepareRow } = useTable(
-        {
-            columns,
-            data: isLoading ? [] : data.filter((e:any) => {
-                if (searchText === "") return true
-                if (e.title.toUpperCase().includes(searchText.toUpperCase())) return true
-                if (e.subTitle.toUpperCase().includes(searchText.toUpperCase())) return true
-                return false
-            }),
-        },
-        useFlexLayout,
-    );
-    
     // SSE 등록
     useEffect(() => {
         fetchSSE(`${process.env.REACT_APP_API_URL}/message/sse`, (data) => {
@@ -242,34 +242,47 @@ export function MessageTab() {
                 <SearchBox value={searchText} onChange={setSearchText} />
                 <Button label='작성' onClick={createMessage} color='black' />
             </Bar>
-            
-            <TableWrapper {...getTableProps()}>
-                <thead>
-                </thead>
-                <tbody>
-                    {
-                        rows.map(row => {
-                            prepareRow(row)
-                            return (
-                                <tr {...row.getRowProps()}>
-                                    {
-                                        row.cells.map(cell => {
-                                            return (
-                                                <td {...cell.getCellProps({
-                                                    style: { minWidth: cell.column.minWidth, width: cell.column.width, maxWidth: cell.column.maxWidth },
-                                                })}>
-                                                    <div>
-                                                        { cell.render('Cell') }
-                                                    </div>
-                                                </td>
-                                            )
-                                        })}
-                                </tr>
-                            )
-                        })}
-                </tbody>
-            </TableWrapper>
 
+            <Items>
+                {
+                    (isLoading ? [] : data.filter((e:any) => {
+                        if (searchText === "") return true
+                        if (e.title.toUpperCase().includes(searchText.toUpperCase())) return true
+                        if (e.subTitle.toUpperCase().includes(searchText.toUpperCase())) return true
+                        return false
+                    })).map((row:any) => (
+                        <Item key={row._id}>
+                            <ItemInner>
+
+                                <AvatarDiv>
+                                    <AvatarIcon src={row.avatarIcon} alt="" />
+                                    <div>
+                                        <AvatarName>{row.avatarName || '이름 없음'}</AvatarName>
+                                        <Time>{dayjs(row.createdAt).format('YY.MM.DD HH:mm')}</Time>
+                                    </div>
+                                </AvatarDiv>
+
+                                <StateDiv>
+                                    <StatusBadgeTag hideBackground color={colorMap(row.state.toLowerCase())} text={capitalize(row.state)} />
+                                    <TypeDiv>{row.type}</TypeDiv>
+                                </StateDiv>
+
+
+                                <TitleDiv>
+                                    <Title>{row.title || '(제목 없음)'}</Title>
+                                    <SubTitle>{row.subTitle}</SubTitle>
+                                </TitleDiv>
+                            </ItemInner>
+
+                            <ItemButtons>
+                                <ItemButton onClick={() => showContent(row.content)}><ChatText size={20} weight="bold" color="var(--gray5)" /></ItemButton>
+                                <ItemButton onClick={() => showRAW(row)}><CodeIcon size={20} weight="bold" color="var(--gray5)" /></ItemButton>
+                                <ItemButton onClick={() => deleteMessage(row._id)}><X size={20} weight="bold" color="var(--gray5)" /></ItemButton>
+                            </ItemButtons>
+                        </Item>
+                    ))
+                }
+            </Items>
         </TabDivver>
     )
 }
