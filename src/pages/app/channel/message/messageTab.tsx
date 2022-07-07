@@ -19,7 +19,7 @@ import { StatusBadgeTag } from "../../../../components/Badge/statusBadge";
 import dayjs from "dayjs";
 import { TopLoadingContext } from "../../../../context/topLoadingBarContext";
 
-
+// TODO: #7 중복 코드&필요없는 코드 제거 및 모듈화
 const Bar = styled.div`
     display: flex;
     align-items: center;
