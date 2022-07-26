@@ -1,5 +1,5 @@
-import { forwardRef } from "react";
-import { Link } from "react-router-dom";
+import { forwardRef, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components"
 
 
@@ -28,8 +28,10 @@ interface ChannelProps {
 }
 
 export const Channel =  forwardRef((props: ChannelProps, ref: any) => {
+    const location = useLocation()
+
     return (
-            <Divver to={`/app/dashboard/${props.to}`} ref={ref} onMouseOver={() => {props.onMouseOver()}} >
+            <Divver to={`/app/${location.pathname.split('/')[2]}/${props.to}`} ref={ref} onMouseOver={() => {props.onMouseOver()}} >
                 {
                     typeof props.icon === 'string'
                         ? <img src={props.icon} alt={props.name} />

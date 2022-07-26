@@ -1,7 +1,7 @@
 import { Channel } from './channel'
 import { IconContext, Horse, Heart, Cube } from "phosphor-react";
 import styled from 'styled-components';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const Divver = styled.div`
@@ -17,8 +17,7 @@ interface ChannelsProps {
         name: string;
         to: string;
         icon: string | React.ReactElement;
-    }}[],
-    defaultChannel: string
+    }}[]
 }
 
 const ChannelsDivver = styled.div`
@@ -31,13 +30,12 @@ const SelectedChannelBackground = styled.div<{top: number}>`
     position: absolute;
     left: 0;
     top: ${props => props.top}px;
-    width: 208px;
     height: 32px;
-    background-color: var(--gray3); 
-    border-top-right-radius: 14px;
-    border-bottom-right-radius: 14px;
+    background-color: var(--gray3);
+    width: 100%;
     margin-top: 2px;
-    transition: 180ms;
+    transition: 70ms;
+    /* transition: 100ms; */
 `
 
 const SelectedChannelHoverBackground = styled.div<{top: number, isShow: boolean}>`
@@ -45,15 +43,12 @@ const SelectedChannelHoverBackground = styled.div<{top: number, isShow: boolean}
     position: absolute;
     left: 0;
     top: ${props => props.top}px;
-    width: 208px;
+    width: 100%;
     height: 32px;
     background-color: var(--gray3); 
-    border-top-right-radius: 14px;
-    border-bottom-right-radius: 14px;
     margin-top: 2px;
     transition: 70ms;
 `
-
 
 export function Channels(props: ChannelsProps) {
     const location = useLocation()
@@ -62,7 +57,7 @@ export function Channels(props: ChannelsProps) {
     const targets = useRef<any>({})
     const timer = useRef<any>(0)
 
-    const [ selectedChannelId, setSelectedChannelId ] = useState(props.defaultChannel)
+    const [ selectedChannelId, setSelectedChannelId ] = useState('')
     const [ selectedChannelBackgroundTop, setSelectedChannelBackgroundTop ] = useState(0)
     const [ selectedChannelBackgroundHoverTop, setSelectedChannelBackgroundHoverTop ] = useState(0)
     const [ isShowSelectedChannelBackgroundHoverTop, setShowSelectedChannelBackgroundHoverTop ] = useState(false)
@@ -72,20 +67,21 @@ export function Channels(props: ChannelsProps) {
     }, [selectedChannelId])
 
     useEffect(() => {
-        setSelectedChannelId(location.pathname.split("/")[3])
+        setSelectedChannelId(location.pathname.split("/")[3] || 'index')
     }, [location])
 
-    const mouseOver = () => {
+    const mouseOver = useCallback(() => {
         clearTimeout(timer.current)
         setShowSelectedChannelBackgroundHoverTop(true)
-    }
+    }, [])
 
-    const mouseOut = () => {
+    const mouseOut = useCallback(() => {
         timer.current = setTimeout(() => {
+            if (!targets.current[selectedChannelId]) return
             setShowSelectedChannelBackgroundHoverTop(false);
             setSelectedChannelBackgroundHoverTop(targets.current[selectedChannelId].getBoundingClientRect().top - DivRef.current.getBoundingClientRect().top)
         }, 100)
-    }
+    }, [selectedChannelId])
 
     return (
         <Divver>
@@ -100,7 +96,7 @@ export function Channels(props: ChannelsProps) {
                         weight: "fill",
                         mirrored: false,
                     }}
-                    >
+                >
                     {
                         props.channels.map((e,i) => {
                             return <ChannelsDivver key={i}>
@@ -121,14 +117,9 @@ export function Channels(props: ChannelsProps) {
                     }
                 </IconContext.Provider>
 
-                <SelectedChannelBackground top={selectedChannelBackgroundTop} />
-                <SelectedChannelHoverBackground top={selectedChannelBackgroundHoverTop} isShow={isShowSelectedChannelBackgroundHoverTop} />
+                { targets.current[selectedChannelId] && <SelectedChannelBackground top={selectedChannelBackgroundTop} />}
+                { targets.current[selectedChannelId] && <SelectedChannelHoverBackground top={selectedChannelBackgroundHoverTop} isShow={isShowSelectedChannelBackgroundHoverTop} />}
             </InnerDivver>
-            
-
-
-            
-            
         </Divver>
     )
 }

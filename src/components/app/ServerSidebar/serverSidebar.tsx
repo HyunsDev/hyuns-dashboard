@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Logo } from "../../Logo/logo";
 import { ToolTip } from "../../Tooltip/tooltip";
@@ -42,24 +43,43 @@ const ServerIconLine = styled.div`
     border-bottom: solid 1px var(--gray4);
 `
 
-
+const ServerIconLink = styled(Link)`
+    
+`
 
 interface ServerSidebarProps {
-
+    servers: {
+        [key: string]: {
+            text: string,
+            icon: React.ReactElement
+            to: string
+        }
+    }
 }
-
 
 export function ServerSidebar(props: ServerSidebarProps) {
 
     return (
         <Divver>
-            <ToolTip text="Hyuns Dashboard" direction="right">
-                <ServerIcon>
-                    <Logo size={40} isRounded />
-                </ServerIcon>
-            </ToolTip>
-            
+            <ServerIconLink to={'/app/dash'}>
+                <ToolTip text="Hyuns Dash" direction="right">
+                    <ServerIcon>
+                        <Logo size={40} isRounded />
+                    </ServerIcon>
+                </ToolTip>
+            </ServerIconLink>
             <ServerIconLine />
+            {
+                Object.entries(props.servers).map(e => <>
+                    <ServerIconLink to={`/app/${e[0]}`}>
+                        <ToolTip text={e[1].text} direction="right">
+                            <ServerIcon>
+                                {e[1].icon}
+                            </ServerIcon>
+                        </ToolTip>
+                    </ServerIconLink>
+                </>)
+            }
         </Divver>
     );
 }
