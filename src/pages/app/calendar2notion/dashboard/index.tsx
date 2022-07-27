@@ -86,15 +86,6 @@ const LoadingIcon = <Spinner size={22} color='var(--status-yellow)'>
 </Spinner>
 
 function StatusBox() {
-    // const { data: sales, isLoading: salesLoading } = useQuery(['sales'], async () => {
-    //     const res = await axios.get(`${process.env.REACT_APP_API_URL}/var/secret/dashboard/revenue`, {
-    //         headers: {
-    //             Authorization: localStorage.getItem('token') || ''
-    //         }
-    //     })
-    //     return res.data
-    // })
-
     const { isLoading: serverStatusLoading,  data:serverStatus } = useQuery(['server'], async () => {
         const res = await axios.get(`${process.env.REACT_APP_API_URL}/server`, {
             headers: {
@@ -109,13 +100,6 @@ function StatusBox() {
 
     return (
         <BoxDivver>
-            {/* <StatusBoxItem
-                label="오늘까지의 매출"
-                value={`${salesLoading ? 'Loading' : sales?.toLocaleString('ko-KR')}원`}
-                color="var(--blue5)" 
-                icon={<CurrencyKrw weight="bold" size={22} color='var(--blue5)' />}
-            /> */}
-
             <StatusBoxItem
                 label="서버 상태"
                 value={serverStatusLoading ? 'Loading' : res ? '정상' : '오류'}
@@ -126,30 +110,12 @@ function StatusBox() {
     )
 }
 
-const GithubBox = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    background-color: var(--gray2);
-    border: solid 1px var(--gray3);
-    border-radius: 8px;
-    padding: 12px;
-
-    img {
-        max-width: 700px;
-        width: 100%;
-    }
-`
-
-export function DashboardTab() {
+export function DashboardChannel() {
 
     return (
         <TabDivver>
             <H1>{dayjs().format('MM월 DD일')} 대시보드</H1>
             <StatusBox />
-            <GithubBox>
-                <img src="https://ghchart.rshah.org/219138/hyunsdev" alt="" />
-            </GithubBox>
         </TabDivver>
     )
 }

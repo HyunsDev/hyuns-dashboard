@@ -9,6 +9,8 @@ import { toast } from "react-toastify"
 import { useSwipeable } from "react-swipeable"
 import { Servers } from "./server"
 
+
+
 const Divver = styled.div`
     width: 100%;
     @media ( max-width: 767px ) {
@@ -91,7 +93,11 @@ function AppScreen() {
             <ContextLayout>
                 <SidebarsDiv isPc={isPc} isOpen={isOpen}>
                     <ServerSidebar servers={{
-                        
+                        calendar2notion: {
+                            icon: <img src="https://s3.hyuns.dev/logo/calendar2notion.png" alt="" />,
+                            text: 'Calendar2notion',
+                            to: '/app/calendar2notion'
+                        }
                     }} />
                     <Sidebar />
                 </SidebarsDiv>

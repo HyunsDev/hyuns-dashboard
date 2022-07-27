@@ -21,12 +21,23 @@ const Divver = styled.div`
 
 const ServerIcon = styled.div`
     cursor: pointer;
-    border-radius: 29px;
     transition: transform 100ms, border 200ms;
     width: 40px;
     height: 40px;
     box-sizing: content-box;
     border: solid 4px var(--blue1);
+
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+
+    img {
+        border-radius: 30px;
+        width: 100%;
+        height: 100%;
+    }
 
     &:hover {
         border: solid 4px var(--blue3);
