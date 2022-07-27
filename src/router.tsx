@@ -23,7 +23,7 @@ const DefaultChannel = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        navigate('/app/dashboard/dashboard')
+        navigate('/app/dash')
     }, [navigate])
 
     return <></>
@@ -43,7 +43,7 @@ export function Router(props: RouterProps) {
                 <Routes>
                     <Route path="/" element={<DefaultChannel />}/>
                     <Route path="/app/" element={<DefaultChannel />}/>
-                    <Route path="/app/:serverId/*" element={<AppRouter />}/>
+                    <Route path="/app/*" element={<AppRouter />}/>
                     <Route path="/login" element={<LoginScreen />}/>
                 </Routes>
             </BrowserRouter>

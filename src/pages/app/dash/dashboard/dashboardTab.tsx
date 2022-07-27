@@ -59,11 +59,12 @@ function StatusBoxItem(props:{label: string, value: string, color: string, icon:
     )
 }
 
-const StatusBoxDivver = styled.div`
+const BoxDivver = styled.div`
     background-color: var(--gray2);
     border: solid 1px var(--gray3);
     border-radius: 8px;
     padding: 12px;
+    width: 100%;
 
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 25%));
@@ -107,7 +108,7 @@ function StatusBox() {
     
 
     return (
-        <StatusBoxDivver>
+        <BoxDivver>
             {/* <StatusBoxItem
                 label="오늘까지의 매출"
                 value={`${salesLoading ? 'Loading' : sales?.toLocaleString('ko-KR')}원`}
@@ -121,9 +122,24 @@ function StatusBox() {
                 color={serverStatusLoading ? 'var(--status-yellow)' : res ? "var(--status-green)" : "var(--status-red)"}
                 icon={serverStatusLoading ? LoadingIcon : <Check weight="bold" size={22} color={res ? "var(--status-green)" : "var(--status-red)"} />}
             />
-        </StatusBoxDivver>
+        </BoxDivver>
     )
 }
+
+const GithubBox = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: var(--gray2);
+    border: solid 1px var(--gray3);
+    border-radius: 8px;
+    padding: 12px;
+
+    img {
+        max-width: 700px;
+        width: 100%;
+    }
+`
 
 export function DashboardTab() {
 
@@ -131,6 +147,9 @@ export function DashboardTab() {
         <TabDivver>
             <H1>{dayjs().format('MM월 DD일')} 대시보드</H1>
             <StatusBox />
+            <GithubBox>
+                <img src="https://ghchart.rshah.org/219138/hyunsdev" alt="" />
+            </GithubBox>
         </TabDivver>
     )
 }

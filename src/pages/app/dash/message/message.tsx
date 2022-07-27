@@ -2,19 +2,19 @@ import { useEffect, useState } from "react";
 import { useLocation, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
 import { HorizonLNB } from "../../../../components/LNB/horizonLNB";
-import { DashboardTab } from "./dashboardTab";
+import { MessageTab } from "./messageTab";
 
 const Divver = styled.div`
     width: 100%;
 `
 
-interface DashboardChannelProps {
+interface ChannelProps {
 
 }
 
-export function DashboardChannel(props: DashboardChannelProps) {
+export function MessageChannel(props: ChannelProps) {
     const location = useLocation()
-    const [ tabId, setTapId ] = useState('dashboard')
+    const [ tabId, setTapId ] = useState('message')
 
     useEffect(() => {
         setTapId(location.pathname.split('/')[4] || 'index')
@@ -24,19 +24,19 @@ export function DashboardChannel(props: DashboardChannelProps) {
         <Divver>
             <HorizonLNB menu={{
                 'index': {
-                    text: '대시보드',
-                    to: '/app/dashboard/dashboard'
+                    text: '메세지',
+                    to: '/app/dash/message'
                 },
-                'widget': {
-                    text: '위젯',
-                    to: '/app/dashboard/dashboard/widget'
+                'all': {
+                    text: '전체',
+                    to: '/app/dash/message/all'
                 },
             }}
             selected={tabId}
             />
             <Routes>
-                <Route path="/" element={<DashboardTab />} />
-                <Route path="/widget" element={<>아직 개발중입니다 :(</>} />
+                <Route path="/" element={<MessageTab />} />
+                <Route path="/all" element={<>아직 개발중입니다 :(</>} />
             </Routes>
         </Divver>
     )

@@ -2,13 +2,10 @@ import { Router } from "./router";
 import { ToastContainer, Flip } from "react-toastify";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import { useEffect } from "react";
-
-import UserContextProvider from "./context/userContext";
-import TopLoadingContextProvider from "./context/topLoadingBarContext";
-import ModalContextProvider from "./context/modalContext";
+import React, { useEffect } from "react";
 
 import 'react-toastify/dist/ReactToastify.css';
+import { ContextWrapper } from "./context/contextWrapper";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,7 +16,6 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-
   // 100vh
   const handleResize = () => {
     const vh = window.innerHeight * 0.01;
@@ -45,13 +41,9 @@ function App() {
       />
         <QueryClientProvider client={queryClient}>
           <ReactQueryDevtools initialIsOpen={false} />
-          <UserContextProvider>
-            <TopLoadingContextProvider>
-              <ModalContextProvider>
-                <Router />
-              </ModalContextProvider>
-            </TopLoadingContextProvider>
-          </UserContextProvider>
+            <ContextWrapper>
+              <Router />
+            </ContextWrapper>
         </QueryClientProvider>
     </div>
   );

@@ -2,11 +2,14 @@ import styled from "styled-components"
 import { Routes, Route, useNavigate } from "react-router-dom"
 import { ServerSidebar, Footer, Sidebar } from "../../components/app"
 
-import { ChannelRouter } from "./channel/channelRouter"
+import { ServerDash } from "./dash"
 import { useCallback, useEffect, useState } from "react"
 import axios from "axios"
 import { toast } from "react-toastify"
 import { useSwipeable } from "react-swipeable"
+import { Servers } from "./server"
+
+
 
 const Divver = styled.div`
     width: 100%;
@@ -89,11 +92,17 @@ function AppScreen() {
         <Divver {...swipeHandler}>
             <ContextLayout>
                 <SidebarsDiv isPc={isPc} isOpen={isOpen}>
-                    <ServerSidebar />
+                    <ServerSidebar servers={{
+                        calendar2notion: {
+                            icon: <img src="https://s3.hyuns.dev/logo/calendar2notion.png" alt="" />,
+                            text: 'Calendar2notion',
+                            to: '/app/calendar2notion'
+                        }
+                    }} />
                     <Sidebar />
                 </SidebarsDiv>
                 <ChannelsDiv isPc={isPc} isOpen={isOpen}>
-                    <ChannelRouter />
+                    <Servers />
                 </ChannelsDiv>
             </ContextLayout>
             <Footer />
@@ -125,8 +134,6 @@ export function AppRouter() {
     }, [navigate])
 
     return (
-        <Routes>
-            <Route path="/*" element={<AppScreen />}/>
-        </Routes>
+        <AppScreen />
     )
 }
