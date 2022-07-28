@@ -2,7 +2,6 @@ import { DotsThreeVertical, IconContext } from "phosphor-react"
 import styled from "styled-components"
 import { ActionMenu } from "../actionMenu"
 import { StatusBadgeTag } from "../Badge/statusBadge"
-import { ToolTip } from "../Tooltip/tooltip"
 
 const ItemButton = styled.div`
     position: relative;

@@ -1,8 +1,7 @@
 import styled from "styled-components"
-import { Routes, Route, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { ServerSidebar, Footer, Sidebar } from "../../components/app"
 
-import { ServerDash } from "./dash"
 import { useCallback, useEffect, useState } from "react"
 import axios from "axios"
 import { toast } from "react-toastify"

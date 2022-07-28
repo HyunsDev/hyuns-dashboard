@@ -15,7 +15,6 @@ import { useQuery } from "react-query";
 
 import { ModalTitle, ModalTitleBox } from "../../../../components/Modal/Header";
 import { Code } from "../../../../components/code/code";
-import { StatusBadgeTag } from "../../../../components/Badge/statusBadge";
 import dayjs from "dayjs";
 import { TopLoadingContext } from "../../../../context/topLoadingBarContext";
 import { Items, ItemsType, ItemType } from "../../../../components";
@@ -27,146 +26,20 @@ const Bar = styled.div`
     justify-content: space-between;
 `
 
-const ItemButton = styled.div`
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: 120ms;
-    opacity: 0;
-`
-
-const ItemButtons = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-
-    @media ( max-width: 767px ) {
-        width: 100%;
-        align-items: flex-end;
-        justify-content: flex-end;
-
-        ${ItemButton} {
-            opacity: 1;
-        }
-    }
-`
-
-const Item = styled.div`
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-    border-right: solid 1px var(--gray4);
-    border-left: solid 1px var(--gray4);
-    border-top: solid 1px var(--gray4);
-
-    @media ( max-width: 767px ) {
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: flex-start;
-        padding: 16px;
-        gap: 8px;
-    }
 
 
-    &:first-child {
-        border-top: none;
-        border-top-left-radius: 8px;
-        border-top-right-radius: 8px;
-    }
 
-    &:last-child {
-        border-bottom-left-radius: 8px;
-        border-bottom-right-radius: 8px;
-    }
-`
 
-const ItemInner = styled.div`
-    display: flex;
-    align-items: center;
 
-    @media ( max-width: 767px ) {
-        gap: 16px;
-        align-items: flex-start;
-        flex-direction: column;
-    }
-`
 
-const AvatarDiv = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 180px;
-`
 
-const AvatarIcon = styled.img`
-    border-radius: 999px;
-    background-color: var(--gray4);
 
-    width: 36px;
-    height: 36px;
-`
 
-const AvatarName = styled.div`
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 17px;
-`
 
-const Time = styled.div`
-    font-size: 12px;
-    color: var(--gray5);
-`
 
-const StateDiv = styled.div`
-    width: 120px;
 
-    @media ( max-width: 767px ) {
-        position: absolute;
-        bottom: 12px;
-        left: 16px;
-    }
-`
 
-const TypeDiv = styled.div`
-    color: var(--gray5);
-    font-size: 12px;
-    margin-left: 16px;
-`
 
-const TitleDiv = styled.div`
-    
-
-`
-
-const Title = styled.div`
-    font-weight: 500;
-    font-size: 14px;
-`
-
-const SubTitle = styled.div`
-    color: var(--gray6);  
-    font-size: 12px;  
-
-`
-
-const colorMap:((text: string) => 'red' | 'yellow' | 'green' | 'blue' | 'gray') = (text:string) => {
-    const map:any= {
-        stateless: 'gray',
-        error: 'red',
-        warning: 'yellow',
-        done: 'blue',
-    }
-    return map[text] || 'gray'
-}
-
-function capitalize(str:string) {
-	return str.charAt(0).toUpperCase() + str.slice(1);
-}
 
 export function MessageTab() {
     const modal = useContext(ModalContext)
@@ -212,7 +85,7 @@ export function MessageTab() {
 
     // SSE 등록
     useEffect(() => {
-        fetchSSE(`${process.env.REACT_APP_API_URL}/message/sse`, (data) => {
+        fetchSSE(`${process.env.REACT_APP_API_URL}/message/sse`, () => {
             refetch()
         }, {
             headers: {

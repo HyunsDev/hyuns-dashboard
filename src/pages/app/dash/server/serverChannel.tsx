@@ -1,21 +1,16 @@
-import { useCallback, useContext, useMemo, useState } from "react";
-import { useTable, useFlexLayout } from 'react-table';
-import { Trash, HighlighterCircle, ArrowUpRight, Code as CodeIcon, Pencil, X } from 'phosphor-react'
+import { useCallback, useContext, useState } from "react";
+import { ArrowUpRight, Code as CodeIcon, Pencil, X } from 'phosphor-react'
 import styled from "styled-components";
 import { SearchBox } from "../../../../components/search/searchBox";
 import { useQuery } from "react-query";
 import axios from "axios";
 
-import { ModalTitle, ModalTitleBox } from "../../../../components/Modal/Header"
 import { H1, TabDivver } from "../../../../components/Tab";
-import { Table } from "../../../../components/table/tableStyle";
 import { Button } from "../../../../components/Input";
 import { ModalContext } from "../../../../context/modalContext";
 import { CreateModalView } from "./createServerModal";
 import { RemoveModalView } from "./removeServerModal";
 import { EditModalView } from "./editServerModal";
-import { StatusBadgeTag } from "../../../../components/Badge/statusBadge";
-import { Code } from "../../../../components/code/code";
 import { Items, ItemsType, ItemType } from "../../../../components";
 import { useCodeModal } from "../../../../hooks/modal/useModal";
 
