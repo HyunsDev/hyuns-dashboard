@@ -80,7 +80,6 @@ export function LambdaChannel() {
 
 
     let items: ItemsType = isLoading ? [] : data.filter((e:any) => {
-        console.table(e)
         if (searchText === "") return true
         if (e.Key.toUpperCase().includes(searchText.toUpperCase())) return true
         return false

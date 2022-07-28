@@ -31,13 +31,6 @@ const Buttons = styled.div`
     margin-top: 8px;
 `
 
-const DeleteButton = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-`
-
 function formatBytes(bytes: number, decimals = 2) {
     if (bytes === 0) return '0 Bytes';
 
