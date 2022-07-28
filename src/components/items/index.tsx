@@ -126,7 +126,6 @@ const TextDiv = styled.div`
 const SubTextDiv = styled.div`
     color: var(--gray6);  
     font-size: 12px;  
-
 `
 
 interface Avatar {
@@ -138,12 +137,13 @@ interface Avatar {
 
 interface Status {
     type: 'status'
-    status: 'stateless' | 'error' | 'warning' | 'done'
+    status: 'stateless' | 'error' | 'warning' | 'done' | 'good'
+    label?: string
 }
 
 interface Text {
     type?: 'text'
-    text: string
+    text?: string
     subText?: string
 }
 
@@ -168,6 +168,7 @@ const colorMap:((text: string) => 'red' | 'yellow' | 'green' | 'blue' | 'gray') 
         error: 'red',
         warning: 'yellow',
         done: 'blue',
+        good: 'green'
     }
     return map[text] || 'gray'
 }
@@ -216,13 +217,13 @@ export function Items(props: Props) {
                                     return (
                                         <StateDiv key={ii}>
                                             <StatusBadgeTag hideBackground color={colorMap(menu.status.toLowerCase())} text={capitalize(menu.status)} />
-                                            <TypeDiv>{menu.status}</TypeDiv>
+                                            {menu.label && <TypeDiv>{menu.label}</TypeDiv>}
                                         </StateDiv>
                                     )
                                 } else {
                                     return (
                                         <TextsDiv key={ii}>
-                                            <TextDiv>{menu.text}</TextDiv>
+                                            {menu.text && <TextDiv>{menu.text}</TextDiv>}
                                             {menu.subText && <SubTextDiv>{menu.subText}</SubTextDiv>}
                                         </TextsDiv>
                                     )

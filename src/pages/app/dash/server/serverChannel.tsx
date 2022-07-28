@@ -1,6 +1,6 @@
 import { useCallback, useContext, useMemo, useState } from "react";
 import { useTable, useFlexLayout } from 'react-table';
-import { Trash, HighlighterCircle, ArrowUpRight, Code as CodeIcon } from 'phosphor-react'
+import { Trash, HighlighterCircle, ArrowUpRight, Code as CodeIcon, Pencil, X } from 'phosphor-react'
 import styled from "styled-components";
 import { SearchBox } from "../../../../components/search/searchBox";
 import { useQuery } from "react-query";
@@ -16,6 +16,8 @@ import { RemoveModalView } from "./removeServerModal";
 import { EditModalView } from "./editServerModal";
 import { StatusBadgeTag } from "../../../../components/Badge/statusBadge";
 import { Code } from "../../../../components/code/code";
+import { Items, ItemsType, ItemType } from "../../../../components";
+import { useCodeModal } from "../../../../hooks/modal/useModal";
 
 
 const Divver = styled.div`
@@ -41,6 +43,7 @@ const DeleteButton = styled.div`
 export function ServerChannel() {
     const [ searchText, setSearchText ] = useState('')
     const modal = useContext(ModalContext)
+    const codeModal = useCodeModal()
 
     const { isLoading: varLoading, data: varData, refetch } = useQuery(['server'], async () => {
         const res = await axios.get(`${process.env.REACT_APP_API_URL}/server`, {
@@ -142,18 +145,46 @@ export function ServerChannel() {
         
     ], [editServer, removeServer, showAPI])
 
-    const { getTableProps, headerGroups, rows, prepareRow } = useTable(
+    const items:ItemsType = varLoading ? [] : varData.filter((e:any) => {
+        if (searchText === "") return true
+        if (e.key.toUpperCase().includes(searchText.toUpperCase())) return true
+        if (e.value.toUpperCase().includes(searchText.toUpperCase())) return true
+        return false
+    }).map((item: any):ItemType => ([
         {
-            columns,
-            data: varLoading ? [] : varData.filter((e:any) => {
-                if (searchText === "") return true
-                if (e.key.toUpperCase().includes(searchText.toUpperCase())) return true
-                if (e.value.toUpperCase().includes(searchText.toUpperCase())) return true
-                return false
-            }),
-        },
-        useFlexLayout,
-    );
+            type: 'avatar',
+            icon: item.img,
+            name: `${item.name} [${item.id}]`,
+            label: `${item.url}`
+        }, {
+            type: 'text',
+            subText: `${item.memo.substring(0, 50)}${item.memo.length > 50 && '...'}`,
+        }, {
+            type: 'status',
+            status: item.lastCheckStatus === 'good' ? 'good' : 'error'
+        }, {
+            type: 'buttons',
+            button: [
+                {
+                    icon: <CodeIcon />,
+                    label: 'Raw 보기',
+                    onClick: () => codeModal(item.name, item)
+                }, {
+                    icon: <ArrowUpRight />,
+                    label: '열기',
+                    onClick: () => window.open(item.url)
+                }, {
+                    icon: <Pencil />,
+                    label: '수정',
+                    onClick: () => editServer(item)
+                }, {
+                    icon: <X />,
+                    label: '삭제',
+                    onClick: () => removeServer(item.id)
+                }
+            ]
+        }
+    ]))
 
     return (
         <Divver>
@@ -163,47 +194,7 @@ export function ServerChannel() {
                     <SearchBox value={searchText} onChange={setSearchText} />
                     <Button label="서버 생성" onClick={createServer} type={'button'} color='black' />
                 </Buttons>
-                <Table {...getTableProps()}>
-                    <thead>
-                        {
-                            headerGroups.map(headerGroup => (
-                                <tr {...headerGroup.getHeaderGroupProps()}>
-                                    {
-                                        headerGroup.headers.map(column => (
-                                            <th {...column.getHeaderProps({
-                                                style: { minWidth: column.minWidth, width: column.width, maxWidth: column.maxWidth },
-                                            })}>
-                                                <div>
-                                                    {column.render('Header')}
-                                                </div>
-                                            </th>
-                                        ))}
-                                </tr>
-                            ))}
-                    </thead>
-                    <tbody>
-                        {
-                            rows.map(row => {
-                                prepareRow(row)
-                                return (
-                                    <tr {...row.getRowProps()}>
-                                        {
-                                            row.cells.map(cell => {
-                                                return (
-                                                    <td {...cell.getCellProps({
-                                                        style: { minWidth: cell.column.minWidth, width: cell.column.width, maxWidth: cell.column.maxWidth },
-                                                    })}>
-                                                        <div>
-                                                            { cell.render('Cell') }
-                                                        </div>
-                                                    </td>
-                                                )
-                                            })}
-                                    </tr>
-                                )
-                            })}
-                    </tbody>
-                </Table>
+                <Items data={items} />
             </TabDivver>
         </Divver>
     )
