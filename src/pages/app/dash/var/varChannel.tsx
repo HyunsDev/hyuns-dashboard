@@ -1,4 +1,4 @@
-import { useCallback, useContext, useMemo, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import {  Code as CodeIcon, X, Pencil } from 'phosphor-react'
 import styled from "styled-components";
 import { SearchBox } from "../../../../components/search/searchBox";
@@ -6,14 +6,14 @@ import { useQuery } from "react-query";
 import axios from "axios";
 
 import { H1, TabDivver } from "../../../../components/Tab";
-import { Button } from "../../../../components/Input";
+import { Button, Checkbox } from "../../../../components/Input";
 import { ModalContext } from "../../../../context/modalContext";
 import { CreateModalView } from "./createVarModal";
 import { RemoveModalView } from "./removeVarModal";
 import { EditModalView } from "./editVarModal";
 import { ModalTitle, ModalTitleBox } from "../../../../components/Modal/Header";
 import { Code } from "../../../../components/code/code";
-import { Items } from "../../../../components";
+import { FlexRow, Items } from "../../../../components";
 import dayjs from "dayjs";
 
 
@@ -27,17 +27,12 @@ const Buttons = styled.div`
     justify-content: space-between;
     margin-bottom: 12px;
     margin-top: 8px;
-`
-
-const DeleteButton = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+    gap: 8px;
 `
 
 export function VarChannel() {
     const [ searchText, setSearchText ] = useState('')
+    const [ isShowPrivateVar, setShowPrivateVar ] = useState(localStorage.getItem('dash/isShowPrivateVar') === 'show')
     const modal = useContext(ModalContext)
 
     const { isLoading: varLoading, data: varData, refetch } = useQuery(['var'], async () => {
@@ -77,6 +72,7 @@ export function VarChannel() {
     }, [modal])
 
     const items = varLoading ? [] : varData.filter((e:any) => {
+        if (!isShowPrivateVar && !e.isPublic) return false
         if (searchText === "") return true
         if (e.key.toUpperCase().includes(searchText.toUpperCase())) return true
         if (e.value.toUpperCase().includes(searchText.toUpperCase())) return true
@@ -96,24 +92,33 @@ export function VarChannel() {
         {
             type: 'buttons',
             button: [
-                {
-                    label: 'Raw 보기',
-                    icon: <CodeIcon />,
-                    onClick: () => showVar(item)
-                },
-                {
-                    label: '수정',
-                    icon: <Pencil />,
-                    onClick: () => editVar(item)
-                },
-                {
-                    label: '삭제',
-                    icon: <X />,
-                    onClick: () => removeVar(item.key)
-                },
+                [
+                    {
+                        label: 'Raw 보기',
+                        icon: <CodeIcon />,
+                        onClick: () => showVar(item)
+                    },
+                    {
+                        label: '수정',
+                        icon: <Pencil />,
+                        onClick: () => editVar(item)
+                    },
+                ], [
+                    {
+                        label: '삭제',
+                        icon: <X />,
+                        onClick: () => removeVar(item.key),
+                        color: 'red'
+                    },
+                ]
             ]
         }
     ]))
+
+    const toggleShowPrivateVar = () => {
+        localStorage.setItem('dash/isShowPrivateVar', isShowPrivateVar ? 'hide' : 'show')
+        setShowPrivateVar(!isShowPrivateVar)
+    }
 
     return (
         <Divver>
@@ -121,7 +126,10 @@ export function VarChannel() {
                 <H1>변수</H1>
                 <Buttons>
                     <SearchBox value={searchText} onChange={setSearchText} />
-                    <Button label="변수 생성" onClick={createVar} type={'button'} color='black' />
+                    <FlexRow>
+                        <Checkbox label="👀" value={isShowPrivateVar} onChange={() => {toggleShowPrivateVar()}} />
+                        <Button label="변수 생성" onClick={createVar} type={'button'} color='black' />
+                    </FlexRow>
                 </Buttons>
 
                 <Items data={items} />

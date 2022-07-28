@@ -2,7 +2,6 @@ import { ModalTitle, ModalTitleBox } from "../../../../../components/Modal/Heade
 import { useForm, Controller } from "react-hook-form";
 import { Button, TextArea, TextField } from "../../../../../components/Input";
 import styled from "styled-components";
-import { Checkbox } from "../../../../../components/Input/checkbox";
 import axios from "axios";
 import { useContext } from "react";
 import { TopLoadingContext } from "../../../../../context/topLoadingBarContext";

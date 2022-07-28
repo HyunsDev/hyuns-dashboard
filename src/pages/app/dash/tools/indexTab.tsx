@@ -24,7 +24,7 @@ export function IndexTab() {
                     },
                     {
                         type: 'buttons',
-                        button: [
+                        button: [[
                             {
                                 icon: <MagnifyingGlass />,
                                 label: 'JWT 조회',
@@ -35,7 +35,7 @@ export function IndexTab() {
                                 label: 'JWT 생성',
                                 onClick: () => modal.open(<CreateJwtModal />)
                             }
-                        ]
+                        ]]
                     }
                 ]
             ]} />

@@ -1,13 +1,11 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useTable, useFlexLayout } from 'react-table';
-import { Trash, Download, ClipboardText, X, Code  } from 'phosphor-react'
+import { useCallback, useContext, useState } from "react";
+import { Download, ClipboardText, X, Code  } from 'phosphor-react'
 import styled from "styled-components";
 import { SearchBox } from "../../../../components/search/searchBox";
 import { useQuery } from "react-query";
 import axios from "axios";
 
 import { H1, TabDivver } from "../../../../components/Tab";
-import { Table } from "../../../../components/table/tableStyle";
 import { Button } from "../../../../components/Input";
 import { ModalContext } from "../../../../context/modalContext";
 import { CreateModalModalView } from "./createResourceModal";
@@ -29,13 +27,6 @@ const Buttons = styled.div`
     justify-content: space-between;
     margin-bottom: 12px;
     margin-top: 8px;
-`
-
-const DeleteButton = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
 `
 
 function formatBytes(bytes: number, decimals = 2) {
@@ -85,26 +76,30 @@ export function ResourceChannel() {
         {
             type: 'buttons',
             button: [
-                {
-                    label: 'Raw 보기',
-                    icon: <Code />,
-                    onClick: () => codeModal('Raw 보기', item)
-                },
-                {
-                    icon: <ClipboardText />,
-                    label: '복사',
-                    onClick: () => {navigator.clipboard.writeText(`https://s3.hyuns.dev/${item.Key}`); toast.info('클립보드에 복사했어요.')}
-                },
-                {
-                    icon: <Download />,
-                    label: '다운로드',
-                    onClick: () => window.open(`https://s3.hyuns.dev/${item.Key}`)
-                },
-                {
-                    icon: <X />,
-                    label: '삭제',
-                    onClick: () => removeVar(item.Key)
-                }
+                [
+                    {
+                        label: 'Raw 보기',
+                        icon: <Code />,
+                        onClick: () => codeModal('Raw 보기', item)
+                    },
+                    {
+                        icon: <ClipboardText />,
+                        label: '복사',
+                        onClick: () => {navigator.clipboard.writeText(`https://s3.hyuns.dev/${item.Key}`); toast.info('클립보드에 복사했어요.')}
+                    },
+                    {
+                        icon: <Download />,
+                        label: '다운로드',
+                        onClick: () => window.open(`https://s3.hyuns.dev/${item.Key}`)
+                    }
+                ], [
+                    {
+                        icon: <X />,
+                        label: '삭제',
+                        onClick: () => removeVar(item.Key),
+                        color: 'red'
+                    }
+                ]
             ]
         }
     ]))

@@ -6,6 +6,7 @@ import { DashboardChannel } from './dashboard'
 import styled from 'styled-components'
 import { useServer } from '../../../hooks/useServer'
 import { useEffect } from 'react'
+import { useTitle } from '../../../hooks/modal/useTitle'
 
 interface ChannelRouterProps {
 
@@ -23,8 +24,13 @@ const Divver = styled.div`
 
 export function ServerCalendar2notion(props: ChannelRouterProps) {
     const [server, initServer] = useServer()
+    const editTitle = useTitle()
     const location = useLocation()
     const navigate = useNavigate()
+
+    useEffect(() => {
+        editTitle('Calendar2notion')
+    }, [editTitle])
 
     useEffect(() => {
         initServer({

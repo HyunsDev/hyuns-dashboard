@@ -17,7 +17,8 @@ interface ChannelsProps {
         name: string;
         to: string;
         icon: string | React.ReactElement;
-    }}[]
+    }}[],
+    close: Function
 }
 
 const ChannelsDivver = styled.div`
@@ -109,6 +110,7 @@ export function Channels(props: ChannelsProps) {
                                             ref={(el:any) => targets.current[channel[0]] = el}
                                             onMouseOver={() => setSelectedChannelBackgroundHoverTop(targets.current[channel[0]].getBoundingClientRect().top - DivRef.current.getBoundingClientRect().top)}
                                             to={channel[1].to}
+                                            onClick={() => props.close()}
                                         />
                                     })
                                 }

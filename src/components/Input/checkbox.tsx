@@ -89,8 +89,8 @@ export function Checkbox(props: CheckboxProps) {
         } else {
             style.backgroundColor = 'var(--gray7)'
             style.backgroundColorHover = 'var(--gray7)'
-            style.borderColor = 'var(--gray5)'
-            style.borderColorHover = 'var(--gray5)'
+            style.borderColor = 'var(--gray7)'
+            style.borderColorHover = 'var(--gray7)'
         }
     } else {
         if (props.disabled) {

@@ -1,5 +1,6 @@
-import { IconContext } from "phosphor-react"
+import { DotsThreeVertical, IconContext } from "phosphor-react"
 import styled from "styled-components"
+import { ActionMenu } from "../actionMenu"
 import { StatusBadgeTag } from "../Badge/statusBadge"
 import { ToolTip } from "../Tooltip/tooltip"
 
@@ -20,13 +21,9 @@ const ItemButtons = styled.div`
     gap: 16px;
 
     @media ( max-width: 767px ) {
-        width: 100%;
-        align-items: flex-end;
-        justify-content: flex-end;
-
-        ${ItemButton} {
-            opacity: 1;
-        }
+        position: absolute;
+        top: 16px;
+        right: 16px;
     }
 `
 
@@ -76,7 +73,7 @@ const AvatarDiv = styled.div`
     display: flex;
     align-items: center;
     gap: 8px;
-    width: 180px;
+    width: 200px;
 `
 
 const AvatarIcon = styled.img`
@@ -100,18 +97,22 @@ const AvatarLabel = styled.div`
 
 const StateDiv = styled.div`
     width: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 
     @media ( max-width: 767px ) {
-        position: absolute;
-        bottom: 12px;
-        left: 16px;
+        margin-top: 4px;
+        width: 100%;
+        flex-direction: row;
+        gap: 4px;
     }
 `
 
 const TypeDiv = styled.div`
     color: var(--gray5);
     font-size: 12px;
-    margin-left: 16px;
+    margin-left: 8px;
 `
 
 const TextsDiv = styled.div`
@@ -126,7 +127,6 @@ const TextDiv = styled.div`
 const SubTextDiv = styled.div`
     color: var(--gray6);  
     font-size: 12px;  
-
 `
 
 interface Avatar {
@@ -138,12 +138,13 @@ interface Avatar {
 
 interface Status {
     type: 'status'
-    status: 'stateless' | 'error' | 'warning' | 'done'
+    status: 'stateless' | 'error' | 'warning' | 'done' | 'good'
+    label?: string
 }
 
 interface Text {
     type?: 'text'
-    text: string
+    text?: string
     subText?: string
 }
 
@@ -152,8 +153,9 @@ interface Buttons {
     button: {
         label: string
         onClick: Function
-        icon: React.ReactElement
-    }[]
+        icon: React.ReactElement,
+        color?: 'normal' | 'red'
+    }[][]
 }
 
 type Item = (Avatar | Status | Text | Buttons)[]
@@ -168,6 +170,7 @@ const colorMap:((text: string) => 'red' | 'yellow' | 'green' | 'blue' | 'gray') 
         error: 'red',
         warning: 'yellow',
         done: 'blue',
+        good: 'green'
     }
     return map[text] || 'gray'
 }
@@ -205,25 +208,22 @@ export function Items(props: Props) {
                                 } else if (menu.type === 'buttons') {
                                     return (
                                         <ItemButtons key={ii}>
-                                            {
-                                                menu.button.map((button, iii) => (
-                                                    <ToolTip key={iii} text={button.label}><ItemButton onClick={() => button.onClick()}>{button.icon}</ItemButton></ToolTip>
-                                                ))
-                                            }
+                                            <ActionMenu icon={<DotsThreeVertical />} actions={menu.button} />
                                         </ItemButtons>
+                                        
                                     )
                                 } else if (menu.type === 'status') {
                                     return (
                                         <StateDiv key={ii}>
-                                            <StatusBadgeTag hideBackground color={colorMap(menu.status.toLowerCase())} text={capitalize(menu.status)} />
-                                            <TypeDiv>{menu.status}</TypeDiv>
+                                            <StatusBadgeTag color={colorMap(menu.status.toLowerCase())} text={capitalize(menu.status)} />
+                                            {menu.label && <TypeDiv>{menu.label}</TypeDiv>}
                                         </StateDiv>
                                     )
                                 } else {
                                     return (
                                         <TextsDiv key={ii}>
-                                            <TextDiv>{menu.text}</TextDiv>
-                                            {menu.subText && <SubTextDiv>{menu.subText}</SubTextDiv>}
+                                            {menu.text && <TextDiv>{`${menu.text.substring(0, 50)}${menu.text.length > 50 ? '...' : ''}`}</TextDiv>}
+                                            {menu.subText && <SubTextDiv>{`${menu.subText.substring(0, 50)}${menu.subText.length > 50 ? '...'  : ''}`}</SubTextDiv>}
                                         </TextsDiv>
                                     )
                                 }

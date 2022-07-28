@@ -12,6 +12,7 @@ import styled from 'styled-components'
 import { useServer } from '../../../hooks/useServer'
 import { useEffect } from 'react'
 import { ToolsChannel } from './tools'
+import { useTitle } from '../../../hooks/modal/useTitle'
 
 interface ChannelRouterProps {
 
@@ -28,9 +29,14 @@ const Divver = styled.div`
 `
 
 export function ServerDash(props: ChannelRouterProps) {
+    const editTitle = useTitle()
     const [server, initServer] = useServer()
     const location = useLocation()
     const navigate = useNavigate()
+
+    useEffect(() => {
+        editTitle()
+    }, [editTitle])
 
     useEffect(() => {
         initServer({
