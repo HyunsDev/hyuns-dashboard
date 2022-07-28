@@ -1,13 +1,11 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useTable, useFlexLayout } from 'react-table';
-import { Trash, Download, ClipboardText, X, Code  } from 'phosphor-react'
+import { useCallback, useContext, useState } from "react";
+import { Download, ClipboardText, X, Code  } from 'phosphor-react'
 import styled from "styled-components";
 import { SearchBox } from "../../../../components/search/searchBox";
 import { useQuery } from "react-query";
 import axios from "axios";
 
 import { H1, TabDivver } from "../../../../components/Tab";
-import { Table } from "../../../../components/table/tableStyle";
 import { Button } from "../../../../components/Input";
 import { ModalContext } from "../../../../context/modalContext";
 import { CreateModalModalView } from "./createResourceModal";

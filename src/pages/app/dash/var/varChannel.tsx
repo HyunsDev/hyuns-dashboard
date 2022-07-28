@@ -1,4 +1,4 @@
-import { useCallback, useContext, useMemo, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import {  Code as CodeIcon, X, Pencil } from 'phosphor-react'
 import styled from "styled-components";
 import { SearchBox } from "../../../../components/search/searchBox";
@@ -29,12 +29,6 @@ const Buttons = styled.div`
     margin-top: 8px;
 `
 
-const DeleteButton = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-`
 
 export function VarChannel() {
     const [ searchText, setSearchText ] = useState('')

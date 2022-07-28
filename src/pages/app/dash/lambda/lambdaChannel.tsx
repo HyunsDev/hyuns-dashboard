@@ -1,13 +1,11 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useTable, useFlexLayout } from 'react-table';
-import { Trash, PaperPlaneTilt, Code } from 'phosphor-react'
+import { useCallback, useContext, useState } from "react";
+import { PaperPlaneTilt, Code } from 'phosphor-react'
 import styled from "styled-components";
 import { SearchBox } from "../../../../components/search/searchBox";
 import { useQuery } from "react-query";
 import axios from "axios";
 
 import { H1, TabDivver } from "../../../../components/Tab";
-import { Table } from "../../../../components/table/tableStyle";
 import { Button } from "../../../../components/Input";
 import { ModalContext } from "../../../../context/modalContext";
 import { InvokeLambdaModalView } from "./invokeLambdaModal";
@@ -30,12 +28,6 @@ const Buttons = styled.div`
     margin-top: 8px;
 `
 
-const DeleteButton = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-`
 
 export function LambdaChannel() {
     const [searchText, setSearchText] = useState('')
@@ -55,28 +47,6 @@ export function LambdaChannel() {
         modal.open(<InvokeLambdaModalView close={modal.close} refetch={refetch} FunctionName={FunctionName} />)
     }, [modal, refetch])
 
-    const columns = useMemo(() => [
-        {
-            accessor: 'FunctionName',
-            Header: 'name',
-            
-        },
-        {
-            accessor: 'LastModified',
-            Header: '마지막 수정',
-            width: 100,
-            maxWidth: 200,
-            Cell: (row:any) => (<>{dayjs(row.row.original.LastModified).format("YYYY.MM.DD HH:mm:SS")}</>)
-        },
-        {
-            accessor: 'invoke',
-            Header: '',
-            width: 36,
-            maxWidth: 36,
-            Cell: (row: any) => <DeleteButton onClick={() => invokeLambda(row.row.original.FunctionName)}><PaperPlaneTilt size={20} weight="fill" color="var(--gray5)" /></DeleteButton>,
-        },
-        
-    ], [invokeLambda])
 
 
     let items: ItemsType = isLoading ? [] : data.filter((e:any) => {

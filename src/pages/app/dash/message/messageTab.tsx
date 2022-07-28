@@ -1,10 +1,10 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 // import { useTable, useFlexLayout } from 'react-table';
 import { fetchSSE } from "../../../../utils/sse";
 import axios from "axios";
 
-import { ArrowUpRight, Code as CodeIcon, ChatText, X } from 'phosphor-react'
+import { Code as CodeIcon, ChatText, X } from 'phosphor-react'
 
 import { TabDivver, H1 } from "../../../../components/Tab";
 import { SearchBox } from "../../../../components/search/searchBox";
