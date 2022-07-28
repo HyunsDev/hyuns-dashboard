@@ -62,16 +62,18 @@ export function LambdaChannel() {
         {
             type: 'buttons',
             button: [
-                {
-                    label: 'Raw 보기',
-                    icon: <Code />,
-                    onClick: () => codeModal('Raw 보기', item)
-                },
-                {
-                    label: 'Invoke',
-                    icon: <PaperPlaneTilt />,
-                    onClick: () => invokeLambda(item.FunctionName)
-                }
+                [
+                    {
+                        label: 'Raw 보기',
+                        icon: <Code />,
+                        onClick: () => codeModal('Raw 보기', item)
+                    },
+                    {
+                        label: 'Invoke',
+                        icon: <PaperPlaneTilt />,
+                        onClick: () => invokeLambda(item.FunctionName)
+                    }
+                ]
             ]
         }
     ]))

@@ -31,7 +31,7 @@ export const Channel =  forwardRef((props: ChannelProps, ref: any) => {
     const location = useLocation()
 
     return (
-            <Divver to={`/app/${location.pathname.split('/')[2]}/${props.to}`} ref={ref} onMouseOver={() => {props.onMouseOver()}} >
+            <Divver onClick={() => props.onClick && props.onClick()} to={`/app/${location.pathname.split('/')[2]}/${props.to}`} ref={ref} onMouseOver={() => {props.onMouseOver()}} >
                 {
                     typeof props.icon === 'string'
                         ? <img src={props.icon} alt={props.name} />

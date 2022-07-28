@@ -76,26 +76,30 @@ export function ResourceChannel() {
         {
             type: 'buttons',
             button: [
-                {
-                    label: 'Raw 보기',
-                    icon: <Code />,
-                    onClick: () => codeModal('Raw 보기', item)
-                },
-                {
-                    icon: <ClipboardText />,
-                    label: '복사',
-                    onClick: () => {navigator.clipboard.writeText(`https://s3.hyuns.dev/${item.Key}`); toast.info('클립보드에 복사했어요.')}
-                },
-                {
-                    icon: <Download />,
-                    label: '다운로드',
-                    onClick: () => window.open(`https://s3.hyuns.dev/${item.Key}`)
-                },
-                {
-                    icon: <X />,
-                    label: '삭제',
-                    onClick: () => removeVar(item.Key)
-                }
+                [
+                    {
+                        label: 'Raw 보기',
+                        icon: <Code />,
+                        onClick: () => codeModal('Raw 보기', item)
+                    },
+                    {
+                        icon: <ClipboardText />,
+                        label: '복사',
+                        onClick: () => {navigator.clipboard.writeText(`https://s3.hyuns.dev/${item.Key}`); toast.info('클립보드에 복사했어요.')}
+                    },
+                    {
+                        icon: <Download />,
+                        label: '다운로드',
+                        onClick: () => window.open(`https://s3.hyuns.dev/${item.Key}`)
+                    }
+                ], [
+                    {
+                        icon: <X />,
+                        label: '삭제',
+                        onClick: () => removeVar(item.Key),
+                        color: 'red'
+                    }
+                ]
             ]
         }
     ]))

@@ -9,8 +9,6 @@ import { toast } from "react-toastify"
 import { useSwipeable } from "react-swipeable"
 import { Servers } from "./server"
 
-
-
 const Divver = styled.div`
     width: 100%;
     @media ( max-width: 767px ) {
@@ -55,6 +53,7 @@ const SidebarsDiv = styled.div<{isPc: boolean, isOpen: boolean}>`
 
 const ChannelsDiv = styled.div<{isPc: boolean, isOpen: boolean}>`
     width: 100%;
+    overflow-y: scroll;
     ${ props => !props.isPc && `
         position: fixed;
         height: calc(var(--vh) * 100 - 22px);
@@ -99,7 +98,7 @@ function AppScreen() {
                             to: '/app/calendar2notion'
                         }
                     }} />
-                    <Sidebar />
+                    <Sidebar close={() => setIsOpen(false)} />
                 </SidebarsDiv>
                 <ChannelsDiv isPc={isPc} isOpen={isOpen}>
                     <Servers />

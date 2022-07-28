@@ -25,7 +25,7 @@ const Line = styled.div`
 `
 
 interface SidebarProps {
-    
+    close: Function
 }
 
 export function Sidebar(props: SidebarProps) {
@@ -35,7 +35,7 @@ export function Sidebar(props: SidebarProps) {
         <Divver>
             <ServerInfo title={server.name} subTitle='dash.hyuns.dev' />
             <Line />
-            <Channels channels={server.channels} />
+            <Channels close={props.close} channels={server.channels} />
             <UserInfo title="혀느현스" subTitle="hyunsDev" img={HyunsImg} />
         </Divver>
     );

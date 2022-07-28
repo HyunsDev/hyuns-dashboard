@@ -17,6 +17,7 @@ interface ModalViewProps {
 
 interface Form {
     value: string,
+    lastCheck: string
 }
 
 const Inputs = styled.div`
@@ -36,16 +37,17 @@ export function UpdateSalesModal(props:ModalViewProps) {
 
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
-            value: props.initValue.value,
+            value: props.initValue.value.split('\n')[0],
+            lastCheck: props.initValue.value.split('\n')[1]
         }
     });
 
     const onSubmit = async (data:Form) => {
-        const { value } = data
+        const { value, lastCheck } = data
         try {
             await axios.post(`${process.env.REACT_APP_API_URL}/var`, {
                 key: 'money',
-                value
+                value: `${value}\n${lastCheck}`
             }, {
                 headers: {
                     Authorization: localStorage.getItem('token') || ''
@@ -62,7 +64,7 @@ export function UpdateSalesModal(props:ModalViewProps) {
     return (
         <>
             <ModalTitleBox>
-                <ModalTitle>지금까지의 총 수익</ModalTitle>
+                <ModalTitle>내가 벌은 돈</ModalTitle>
             </ModalTitleBox>
             
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -70,7 +72,12 @@ export function UpdateSalesModal(props:ModalViewProps) {
                     <Controller
                         name="value" 
                         control={control}
-                        render={({field}) => <TextField {...field} label={'값'} message={errors.value?.message} ref={null} error={!!errors.value?.message} type="text" />}
+                        render={({field}) => <TextField {...field} label={'수익'} message={errors.value?.message} ref={null} error={!!errors.value?.message} type="text" />}
+                    />
+                    <Controller
+                        name="lastCheck" 
+                        control={control}
+                        render={({field}) => <TextField {...field} label={'마지막 확인 날짜'} message={errors.lastCheck?.message} ref={null} error={!!errors.lastCheck?.message} type="text" />}
                     />
                 </Inputs>
                 <SubmitButtonBox>

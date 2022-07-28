@@ -18,6 +18,7 @@ import { Code } from "../../../../components/code/code";
 import { StatusBadgeTag } from "../../../../components/Badge/statusBadge";
 import dayjs from "dayjs";
 import { TopLoadingContext } from "../../../../context/topLoadingBarContext";
+import { Items, ItemsType, ItemType } from "../../../../components";
 
 // TODO: #7 중복 코드&필요없는 코드 제거 및 모듈화
 const Bar = styled.div`
@@ -92,17 +93,6 @@ const ItemInner = styled.div`
         gap: 16px;
         align-items: flex-start;
         flex-direction: column;
-    }
-`
-
-const Items = styled.div`
-    margin-top: 8px;
-    border-top: solid 1px var(--gray4);
-    border-bottom: solid 1px var(--gray4);
-    border-radius: 8px;
-
-    ${Item}:hover ${ItemButton} {
-        opacity: 1;
     }
 `
 
@@ -235,6 +225,52 @@ export function MessageTab() {
         modal.open(<CreateModalView close={modal.close} refetch={refetch} />)
     }, [modal, refetch])
 
+    const itemData: ItemsType = (isLoading ? [] : data.filter((e:any) => {
+        if (searchText === "") return true
+        if (e.title.toUpperCase().includes(searchText.toUpperCase())) return true
+        if (e.subTitle.toUpperCase().includes(searchText.toUpperCase())) return true
+        return false
+    })).map((item: any):ItemType => ([
+        {
+            type: 'avatar',
+            name: item.avatarName || '이름 없음',
+            icon: item.avatarIcon,
+            label: dayjs().diff(dayjs(item.createdAt), 'day', true) > 1
+                ? dayjs(item.createdAt).format('YY.MM.DD ddd HH:ss')
+                : dayjs(item.createdAt).from(dayjs())
+        }, {
+            type: 'text',
+            text: item.title || '제목 없음',
+            subText: item.subTitle
+        }, {
+            type: 'status',
+            status: item.state,
+            label: item.type
+        },  {
+            type: 'buttons',
+            button: [
+                [
+                    {
+                        label: '내용',
+                        icon: <ChatText />,
+                        onClick: () => showContent(item.content)
+                    }, {
+                        label: 'Raw 보기',
+                        icon: <CodeIcon />,
+                        onClick: () => showRAW(item)
+                    }, 
+                ], [
+                    {
+                        label: '삭제',
+                        icon: <X />,
+                        onClick: () => deleteMessage(item._id),
+                        color: 'red'
+                    }
+                ]
+            ]
+        }
+    ]))
+
     return (
         <TabDivver>
             <H1>메세지</H1>
@@ -243,46 +279,7 @@ export function MessageTab() {
                 <Button label='작성' onClick={createMessage} color='black' />
             </Bar>
 
-            <Items>
-                {
-                    (isLoading ? [] : data.filter((e:any) => {
-                        if (searchText === "") return true
-                        if (e.title.toUpperCase().includes(searchText.toUpperCase())) return true
-                        if (e.subTitle.toUpperCase().includes(searchText.toUpperCase())) return true
-                        return false
-                    })).map((row:any) => (
-                        <Item key={row._id}>
-                            <ItemInner>
-
-                                <AvatarDiv>
-                                    <AvatarIcon src={row.avatarIcon} alt="" />
-                                    <div>
-                                        <AvatarName>{row.avatarName || '이름 없음'}</AvatarName>
-                                        <Time>{dayjs(row.createdAt).format('YY.MM.DD HH:mm')}</Time>
-                                    </div>
-                                </AvatarDiv>
-
-                                <StateDiv>
-                                    <StatusBadgeTag hideBackground color={colorMap(row.state.toLowerCase())} text={capitalize(row.state)} />
-                                    <TypeDiv>{row.type}</TypeDiv>
-                                </StateDiv>
-
-
-                                <TitleDiv>
-                                    <Title>{row.title || '(제목 없음)'}</Title>
-                                    <SubTitle>{row.subTitle}</SubTitle>
-                                </TitleDiv>
-                            </ItemInner>
-
-                            <ItemButtons>
-                                <ItemButton onClick={() => showContent(row.content)}><ChatText size={20} weight="bold" color="var(--gray5)" /></ItemButton>
-                                <ItemButton onClick={() => showRAW(row)}><CodeIcon size={20} weight="bold" color="var(--gray5)" /></ItemButton>
-                                <ItemButton onClick={() => deleteMessage(row._id)}><X size={20} weight="bold" color="var(--gray5)" /></ItemButton>
-                            </ItemButtons>
-                        </Item>
-                    ))
-                }
-            </Items>
+            <Items data={itemData} />
         </TabDivver>
     )
 }

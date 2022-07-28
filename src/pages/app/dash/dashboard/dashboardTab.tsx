@@ -126,8 +126,8 @@ function StatusBox() {
     return (
         <BoxDivver>
             <StatusBoxItem
-                label="오늘까지의 수익"
-                value={`${salesLoading ? 'Loading' : sales.toLocaleString()}원`}
+                label="내가 번 돈"
+                value={`${salesLoading ? 'Loading' : Number(sales.split('\n')[0]).toLocaleString()}원`}
                 color="var(--blue5)" 
                 icon={<CurrencyKrw weight="bold" size={22} color='var(--blue5)' />}
                 onClick={() => modal.open(<UpdateSalesModal initValue={{value: sales}} refetch={refetchSales} close={modal.close} />)}

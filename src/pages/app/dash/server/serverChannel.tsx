@@ -19,6 +19,12 @@ import { Code } from "../../../../components/code/code";
 import { Items, ItemsType, ItemType } from "../../../../components";
 import { useCodeModal } from "../../../../hooks/modal/useModal";
 
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime'
+import 'dayjs/locale/ko'
+dayjs.locale('ko')
+dayjs.extend(relativeTime)
+
 
 const Divver = styled.div`
     width: 100%;
@@ -32,14 +38,6 @@ const Buttons = styled.div`
     margin-top: 8px;
 `
 
-const DeleteButton = styled.div`
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-`
-
 export function ServerChannel() {
     const [ searchText, setSearchText ] = useState('')
     const modal = useContext(ModalContext)
@@ -51,6 +49,7 @@ export function ServerChannel() {
                 Authorization: localStorage.getItem('token') || ''
             }
         })
+        console.log(res.data)
         return res.data
     })
 
@@ -61,15 +60,6 @@ export function ServerChannel() {
     const removeServer = useCallback((key: string) => {
         modal.open(<RemoveModalView serverId={key} close={modal.close} refetch={refetch} />)
     }, [modal, refetch])
-
-    const showAPI = useCallback((value:any) => {
-        modal.open(<>
-            <ModalTitleBox>
-                <ModalTitle>서버 정보</ModalTitle>
-            </ModalTitleBox>
-            <Code>{JSON.stringify(value, null, 2)}</Code>
-        </>)
-    }, [modal])
 
     const editServer = useCallback((initValue: {
         id: string,
@@ -82,68 +72,6 @@ export function ServerChannel() {
     }) => {
         modal.open(<EditModalView close={modal.close} refetch={refetch} initValue={initValue} />)
     }, [modal, refetch])
-
-    const columns = useMemo(() => [
-        {
-            accessor: 'img',
-            Header: '',
-            Cell: (row: any) => <img src={row.row.original.img} alt="" className="TableImage"></img>,
-            width: 64,
-            maxWidth: 64
-        },
-        {
-            accessor: 'id',
-            Header: '아이디',
-            width: 100,
-            maxWidth: 100,
-        },
-        {
-            accessor: 'name',
-            Header: '이름',
-            width: 100,
-            maxWidth: 200,
-        },
-        {
-            accessor: 'url',
-            Header: '주소',
-        },
-        {
-            accessor: 'lastCheckStatus',
-            Header: '상태',
-            Cell: (row: any) => <StatusBadgeTag color={row.row.original.lastCheckStatus === 'good' ? 'green' : 'red'} text={row.row.original.lastCheckStatus} />,
-            width: 80,
-            maxWidth: 80,
-        },
-        {
-            accessor: 'info',
-            Header: '',
-            width: 36,
-            maxWidth: 36,
-            Cell: (row: any) => <DeleteButton onClick={() => showAPI(row.row.original)}><CodeIcon size={20} weight="bold" color="var(--gray5)" /></DeleteButton>,
-        },
-        {
-            accessor: 'open',
-            Header: '',
-            width: 36,
-            maxWidth: 36,
-            Cell: (row: any) => <DeleteButton onClick={() => window.open(row.row.original.url)}><ArrowUpRight size={20} weight="bold" color="var(--gray5)" /></DeleteButton>,
-        },
-        {
-            accessor: 'edit',
-            Header: '',
-            width: 36,
-            maxWidth: 36,
-            Cell: (row: any) => <DeleteButton onClick={() => editServer(row.row.original)}><HighlighterCircle size={20} weight="fill" color="var(--gray5)" /></DeleteButton>,
-        },
-        {
-            accessor: 'delete',
-            Header: '',
-            width: 36,
-            maxWidth: 36,
-            Cell: (row: any) => <DeleteButton onClick={() => removeServer(row.row.original.id)}><Trash size={20} weight="fill" color="var(--gray5)" /></DeleteButton>,
-        },
-        
-    ], [editServer, removeServer, showAPI])
 
     const items:ItemsType = varLoading ? [] : varData.filter((e:any) => {
         if (searchText === "") return true
@@ -158,30 +86,36 @@ export function ServerChannel() {
             label: `${item.url}`
         }, {
             type: 'text',
-            subText: `${item.memo.substring(0, 50)}${item.memo.length > 50 && '...'}`,
+            subText: item.memo,
         }, {
             type: 'status',
-            status: item.lastCheckStatus === 'good' ? 'good' : 'error'
+            status: item.lastCheckStatus === 'good' ? 'good' : 'error',
+            label: item.lastCheck && dayjs().to(dayjs(item.lastCheck))
         }, {
             type: 'buttons',
             button: [
-                {
-                    icon: <CodeIcon />,
-                    label: 'Raw 보기',
-                    onClick: () => codeModal(item.name, item)
-                }, {
-                    icon: <ArrowUpRight />,
-                    label: '열기',
-                    onClick: () => window.open(item.url)
-                }, {
-                    icon: <Pencil />,
-                    label: '수정',
-                    onClick: () => editServer(item)
-                }, {
-                    icon: <X />,
-                    label: '삭제',
-                    onClick: () => removeServer(item.id)
-                }
+                [
+                    {
+                        icon: <CodeIcon />,
+                        label: 'Raw 보기',
+                        onClick: () => codeModal(item.name, item)
+                    }, {
+                        icon: <ArrowUpRight />,
+                        label: '열기',
+                        onClick: () => window.open(item.url)
+                    }, {
+                        icon: <Pencil />,
+                        label: '수정',
+                        onClick: () => editServer(item)
+                    },
+                ], [
+                    {
+                        icon: <X />,
+                        label: '삭제',
+                        onClick: () => removeServer(item.id),
+                        color: 'red'
+                    }
+                ]
             ]
         }
     ]))
