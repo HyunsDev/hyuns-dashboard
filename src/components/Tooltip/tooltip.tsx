@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import styled, { keyframes, Keyframes } from "styled-components"
 
 const ToolTipBox = styled.div`
@@ -24,24 +25,24 @@ const ToolTipBox = styled.div`
     }
 `
 
-const Divver = styled.div`
+const Divver = styled.div<{isHover: boolean}>`
     width: fit-content;
     height: fit-content;
     position: relative;
-    z-index: 10;
-    
-    &:hover {
+    z-index: 1000;
+
+    ${props => props.isHover && `
         ${ToolTipBox} {
             visibility: visible;
             opacity: 1;
         }
-    }
+    `}
 `
 
 const ToolTipBoxTop = styled(ToolTipBox)`
     transform: translate(-50%, 0%);
     left: 50%;
-    bottom: 110%;
+    bottom: 130%;
 
     &::after {
         top: 100%;
@@ -93,6 +94,7 @@ interface ToolTipProps {
 }
 
 export function ToolTip(props: ToolTipProps) {
+    const [ isHover, setIsHover ] = useState(false)
 
     let box;
     switch (props.direction) {
@@ -113,12 +115,12 @@ export function ToolTip(props: ToolTipProps) {
             break
 
         default:
-            <ToolTipBoxTop>{props.text}</ToolTipBoxTop>
+            box = <ToolTipBoxTop>{props.text}</ToolTipBoxTop>
             break
     }
 
     return (
-        <Divver className="tooltip">
+        <Divver isHover={isHover} onMouseOver={() => setIsHover(true)} onMouseOut={() => setIsHover(false)} className="tooltip">
             {box}
             {props.children}
         </Divver>

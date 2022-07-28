@@ -81,15 +81,15 @@ export function ServerSidebar(props: ServerSidebarProps) {
             </ServerIconLink>
             <ServerIconLine />
             {
-                Object.entries(props.servers).map(e => <>
-                    <ServerIconLink to={`/app/${e[0]}`}>
+                Object.entries(props.servers).map((e, i) =>
+                    <ServerIconLink key={e[0]} to={`/app/${e[0]}`}>
                         <ToolTip text={e[1].text} direction="right">
                             <ServerIcon>
                                 {e[1].icon}
                             </ServerIcon>
                         </ToolTip>
                     </ServerIconLink>
-                </>)
+                )
             }
         </Divver>
     );
