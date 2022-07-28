@@ -1,13 +1,11 @@
 import { useCallback, useContext, useMemo, useState } from "react";
-import { useTable, useFlexLayout } from 'react-table';
-import { Trash, HighlighterCircle, Code as CodeIcon } from 'phosphor-react'
+import {  Code as CodeIcon, X, Pencil } from 'phosphor-react'
 import styled from "styled-components";
 import { SearchBox } from "../../../../components/search/searchBox";
 import { useQuery } from "react-query";
 import axios from "axios";
 
 import { H1, TabDivver } from "../../../../components/Tab";
-import { Table } from "../../../../components/table/tableStyle";
 import { Button } from "../../../../components/Input";
 import { ModalContext } from "../../../../context/modalContext";
 import { CreateModalView } from "./createVarModal";
@@ -15,6 +13,8 @@ import { RemoveModalView } from "./removeVarModal";
 import { EditModalView } from "./editVarModal";
 import { ModalTitle, ModalTitleBox } from "../../../../components/Modal/Header";
 import { Code } from "../../../../components/code/code";
+import { Items } from "../../../../components";
+import dayjs from "dayjs";
 
 
 const Divver = styled.div`
@@ -76,67 +76,44 @@ export function VarChannel() {
         </>)
     }, [modal])
 
-    const columns = useMemo(() => [
+    const items = varLoading ? [] : varData.filter((e:any) => {
+        if (searchText === "") return true
+        if (e.key.toUpperCase().includes(searchText.toUpperCase())) return true
+        if (e.value.toUpperCase().includes(searchText.toUpperCase())) return true
+        return false
+    }).map((item: any) => ([
         {
-            accessor: 'img',
-            Header: '',
-            Cell: (row: any) => <img src={row.row.original.img} alt="" className="TableImage"></img>,
-            width: 64,
-            maxWidth: 64
+            type: 'avatar',
+            icon: item.img,
+            name: item.key,
+            label: dayjs(item.updatedAt).format('YY.MM.DD HH:mm')
         },
         {
-            accessor: 'key',
-            Header: '키',
-            width: 100,
-            maxWidth: 200,
+            type: 'text',
+            text: item.isPublic ? item.value : '',
+            subText: item.isPublic ? '' : '(숨겨짐)'
         },
         {
-            accessor: 'value',
-            Header: '값'
-        },
-        {
-            accessor: 'isPublic',
-            Header: '공개',
-            width: 80,
-            maxWidth: 80,
-            Cell: (row: any) => <>{row.row.original.isPublic ? '공개' : '비공개'}</>,
-        },
-        {
-            accessor: 'code',
-            Header: '',
-            width: 36,
-            maxWidth: 36,
-            Cell: (row: any) => <DeleteButton onClick={() => showVar(row.row.original)}><CodeIcon size={20} weight="fill" color="var(--gray5)" /></DeleteButton>,
-        },
-        {
-            accessor: 'edit',
-            Header: '',
-            width: 36,
-            maxWidth: 36,
-            Cell: (row: any) => <DeleteButton onClick={() => editVar(row.row.original)}><HighlighterCircle size={20} weight="fill" color="var(--gray5)" /></DeleteButton>,
-        },
-        {
-            accessor: 'delete',
-            Header: '',
-            width: 36,
-            maxWidth: 36,
-            Cell: (row: any) => <DeleteButton onClick={() => removeVar(row.row.original.key)}><Trash size={20} weight="fill" color="var(--gray5)" /></DeleteButton>,
-        },
-        
-    ], [editVar, removeVar])
-
-    const { getTableProps, headerGroups, rows, prepareRow } = useTable(
-        {
-            columns,
-            data: varLoading ? [] : varData.filter((e:any) => {
-                if (searchText === "") return true
-                if (e.key.toUpperCase().includes(searchText.toUpperCase())) return true
-                if (e.value.toUpperCase().includes(searchText.toUpperCase())) return true
-                return false
-            }),
-        },
-        useFlexLayout,
-    );
+            type: 'buttons',
+            button: [
+                {
+                    label: 'Raw 보기',
+                    icon: <CodeIcon />,
+                    onClick: () => showVar(item)
+                },
+                {
+                    label: '수정',
+                    icon: <Pencil />,
+                    onClick: () => editVar(item)
+                },
+                {
+                    label: '삭제',
+                    icon: <X />,
+                    onClick: () => removeVar(item.key)
+                },
+            ]
+        }
+    ]))
 
     return (
         <Divver>
@@ -146,47 +123,8 @@ export function VarChannel() {
                     <SearchBox value={searchText} onChange={setSearchText} />
                     <Button label="변수 생성" onClick={createVar} type={'button'} color='black' />
                 </Buttons>
-                <Table {...getTableProps()}>
-                    <thead>
-                        {
-                            headerGroups.map(headerGroup => (
-                                <tr {...headerGroup.getHeaderGroupProps()}>
-                                    {
-                                        headerGroup.headers.map(column => (
-                                            <th {...column.getHeaderProps({
-                                                style: { minWidth: column.minWidth, width: column.width, maxWidth: column.maxWidth },
-                                            })}>
-                                                <div>
-                                                    {column.render('Header')}
-                                                </div>
-                                            </th>
-                                        ))}
-                                </tr>
-                            ))}
-                    </thead>
-                    <tbody>
-                        {
-                            rows.map(row => {
-                                prepareRow(row)
-                                return (
-                                    <tr {...row.getRowProps()}>
-                                        {
-                                            row.cells.map(cell => {
-                                                return (
-                                                    <td {...cell.getCellProps({
-                                                        style: { minWidth: cell.column.minWidth, width: cell.column.width, maxWidth: cell.column.maxWidth },
-                                                    })}>
-                                                        <div>
-                                                            { cell.render('Cell') }
-                                                        </div>
-                                                    </td>
-                                                )
-                                            })}
-                                    </tr>
-                                )
-                            })}
-                    </tbody>
-                </Table>
+
+                <Items data={items} />
             </TabDivver>
         </Divver>
     )

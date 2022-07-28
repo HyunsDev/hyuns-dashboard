@@ -10,7 +10,7 @@ const Background = styled.div<{isOpen: Boolean}>`
     left: 0;
     width: 100vw;
     height: calc(var(--vh)*100);
-    z-index: 998;
+    z-index: 99998;
     background-color: rgb(0, 0, 0);
     transition: 200ms;
     opacity: ${props => props.isOpen ? 0.2 : 0};
@@ -22,7 +22,7 @@ const ModalBoxDivver = styled.div`
     left: 0;
     width: 100vw;
     height: calc(var(--vh)*100);
-    z-index: 999;
+    z-index: 99999;
     display: flex;
     align-items: center;
     justify-content: center;

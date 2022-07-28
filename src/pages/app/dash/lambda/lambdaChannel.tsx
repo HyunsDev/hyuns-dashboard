@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useTable, useFlexLayout } from 'react-table';
-import { Trash, PaperPlaneTilt } from 'phosphor-react'
+import { Trash, PaperPlaneTilt, Code } from 'phosphor-react'
 import styled from "styled-components";
 import { SearchBox } from "../../../../components/search/searchBox";
 import { useQuery } from "react-query";
@@ -11,8 +11,12 @@ import { Table } from "../../../../components/table/tableStyle";
 import { Button } from "../../../../components/Input";
 import { ModalContext } from "../../../../context/modalContext";
 import { InvokeLambdaModalView } from "./invokeLambdaModal";
-import dayjs from "dayjs";
+import { Items, ItemsType, ItemType } from "../../../../components";
+import { useCodeModal } from "../../../../hooks/modal/useModal";
 
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko'
+dayjs.locale('ko')
 
 const Divver = styled.div`
     width: 100%;
@@ -36,6 +40,7 @@ const DeleteButton = styled.div`
 export function LambdaChannel() {
     const [searchText, setSearchText] = useState('')
     const modal = useContext(ModalContext)
+    const codeModal = useCodeModal()
 
     const { isLoading, data, refetch } = useQuery(['lambda'], async () => {
         const res = await axios.get(`${process.env.REACT_APP_API_URL}/lambda`, {
@@ -73,17 +78,34 @@ export function LambdaChannel() {
         
     ], [invokeLambda])
 
-    const { getTableProps, headerGroups, rows, prepareRow } = useTable(
+
+    let items: ItemsType = isLoading ? [] : data.filter((e:any) => {
+        console.table(e)
+        if (searchText === "") return true
+        if (e.Key.toUpperCase().includes(searchText.toUpperCase())) return true
+        return false
+    }).map((item: any):ItemType => ([
         {
-            columns,
-            data: isLoading ? [] : data.filter((e:any) => {
-                if (searchText === "") return true
-                if (e.Key.toUpperCase().includes(searchText.toUpperCase())) return true
-                return false
-            }),
+            type: 'text',
+            text: item.FunctionName,
+            subText: dayjs(item.LastModified).format('YY.MM.DD ddd HH:mm')
         },
-        useFlexLayout,
-    );
+        {
+            type: 'buttons',
+            button: [
+                {
+                    label: 'Raw 보기',
+                    icon: <Code />,
+                    onClick: () => codeModal('Raw 보기', item)
+                },
+                {
+                    label: 'Invoke',
+                    icon: <PaperPlaneTilt />,
+                    onClick: () => invokeLambda(item.FunctionName)
+                }
+            ]
+        }
+    ]))
 
     return (
         <Divver>
@@ -93,47 +115,8 @@ export function LambdaChannel() {
                     <SearchBox value={searchText} onChange={setSearchText} />
                     <Button label="AWS 람다" onClick={() => window.open('https://ap-northeast-2.console.aws.amazon.com/lambda/home?region=ap-northeast-2#/functions')} type={'button'} color='black' />
                 </Buttons>
-                <Table {...getTableProps()}>
-                    <thead>
-                        {
-                            headerGroups.map(headerGroup => (
-                                <tr {...headerGroup.getHeaderGroupProps()}>
-                                    {
-                                        headerGroup.headers.map(column => (
-                                            <th {...column.getHeaderProps({
-                                                style: { minWidth: column.minWidth, width: column.width, maxWidth: column.maxWidth },
-                                            })}>
-                                                <div>
-                                                    {column.render('Header')}
-                                                </div>
-                                            </th>
-                                        ))}
-                                </tr>
-                            ))}
-                    </thead>
-                    <tbody>
-                        {
-                            rows.map(row => {
-                                prepareRow(row)
-                                return (
-                                    <tr {...row.getRowProps()}>
-                                        {
-                                            row.cells.map(cell => {
-                                                return (
-                                                    <td {...cell.getCellProps({
-                                                        style: { minWidth: cell.column.minWidth, width: cell.column.width, maxWidth: cell.column.maxWidth },
-                                                    })}>
-                                                        <div>
-                                                            { cell.render('Cell') }
-                                                        </div>
-                                                    </td>
-                                                )
-                                            })}
-                                    </tr>
-                                )
-                            })}
-                    </tbody>
-                </Table>
+                
+                <Items data={items} />
             </TabDivver>
         </Divver>
     )

@@ -1,3 +1,5 @@
 export * from './textField'
 export * from './button'
 export * from './textArea'
+export * from './checkbox'
+export * from './fileField'
