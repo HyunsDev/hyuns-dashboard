@@ -1,5 +1,5 @@
 import { Channel } from './channel'
-import { IconContext, Horse, Heart, Cube } from "phosphor-react";
+import { IconContext } from "phosphor-react";
 import styled from 'styled-components';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';

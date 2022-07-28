@@ -2,12 +2,10 @@ import styled from "styled-components";
 import { ServerInfo } from "./serverInfo";
 import { Channels } from "./channels";
 import { UserInfo } from "./userInfo";
-import { PuzzlePiece, Bell, Database, Folder, HardDrives, PaperPlaneTilt  } from 'phosphor-react'
 
 
 import HyunsImg from '../../../assets/hyuns.jpg'
 import { useServer } from "../../../hooks/useServer";
-import { useEffect } from "react";
 
 const Divver = styled.div`
     width: 220px;
