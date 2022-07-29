@@ -130,7 +130,7 @@ const SubTextDiv = styled.div`
 
 interface Avatar {
     type: 'avatar'
-    icon: string
+    icon: string | React.ReactElement
     name: string
     label: string
 }
@@ -178,6 +178,15 @@ function capitalize(str:string) {
 	return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+const A = styled.a`
+    text-decoration: none;
+    color: var(--gray6);
+
+    &:hover {
+        text-decoration: underline;
+    }
+`
+
 
 export function Items(props: Props) {
     return (
@@ -197,7 +206,13 @@ export function Items(props: Props) {
                                 if (menu.type === 'avatar') {
                                     return (
                                         <AvatarDiv key={ii}>
-                                            <AvatarIcon src={menu.icon} alt="" />
+                                            <>
+                                                {
+                                                    typeof menu.icon === 'string' 
+                                                    ? <AvatarIcon src={menu.icon} alt="" />
+                                                    : menu.icon
+                                                }
+                                            </>
                                             <div>
                                                 <AvatarName>{menu.name}</AvatarName>
                                                 <AvatarLabel>{menu.label}</AvatarLabel>
@@ -221,7 +236,9 @@ export function Items(props: Props) {
                                 } else {
                                     return (
                                         <TextsDiv key={ii}>
-                                            {menu.text && <TextDiv>{`${menu.text.substring(0, 50)}${menu.text.length > 50 ? '...' : ''}`}</TextDiv>}
+                                            {menu.text && (menu.text.startsWith('https')
+                                                ? <TextDiv><A href={menu.text} target={'_blank'} rel="noreferrer">{`${menu.text.substring(0, 50)}${menu.text.length > 50 ? '...' : ''}`}</A></TextDiv>
+                                                : <TextDiv>{`${menu.text.substring(0, 50)}${menu.text.length > 50 ? '...' : ''}`}</TextDiv>)}
                                             {menu.subText && <SubTextDiv>{`${menu.subText.substring(0, 50)}${menu.subText.length > 50 ? '...'  : ''}`}</SubTextDiv>}
                                         </TextsDiv>
                                     )

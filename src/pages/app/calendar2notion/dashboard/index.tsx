@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import { TabDivver, H1 } from "../../../../components/Tab";
-import { CurrencyKrw, Check, Spinner } from 'phosphor-react'
+import { CurrencyKrw, Check, Spinner, UserCircle, Aperture, CircleNotch } from 'phosphor-react'
 import React from "react";
 import { useQuery } from "react-query";
 import { instance } from "../../../../utils/axios";
 import dayjs from "dayjs";
 import axios from "axios";
+import { FlexCenter, FlexColumn, Items } from "../../../../components";
 
 const StatusBoxItemDivver = styled.div`
     display: flex;
@@ -68,9 +69,7 @@ const BoxDivver = styled.div`
 
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 25%));
-    /* grid-auto-columns: minmax(200px, auto); */
     justify-content: space-between;
-    /* grid-auto-rows: minmax(150px, auto); */
 `
 
 const LoadingIcon = <Spinner size={22} color='var(--status-yellow)'>
@@ -110,12 +109,99 @@ function StatusBox() {
     )
 }
 
-export function DashboardChannel() {
+const StatisticBoxDiv= styled.div`
+    background-color: var(--gray2);
+    border: solid 1px var(--gray3);
+    border-radius: 8px;
+    padding: 12px;
+    width: 100%;
+`
 
+function StatisticsBox() {
+    const { isLoading,  data } = useQuery(['calendar2notion', 'server'], async () => {
+        const res = await axios.get(`https://api-calendar2notion.opize.me/v3/admin/statistics`, {
+            headers: {
+                Authorization: localStorage.getItem('calendar2notion/adminToken') || ''
+            }
+        })
+
+        return res.data
+    })
+
+    return (
+        <StatisticBoxDiv>
+            { isLoading
+                ? <FlexCenter>
+                    <CircleNotch>
+                        <animateTransform 
+                            attributeName="transform"
+                            attributeType="XML"
+                            type="rotate"
+                            dur="5s"
+                            from="0 0 0"
+                            to="360 0 0"
+                            repeatCount="indefinite"
+                        />
+                    </CircleNotch>
+                </FlexCenter>
+                : <FlexColumn>
+                <H1>통계</H1>
+                <Items data={[
+                    [
+                        {
+                            type: 'avatar',
+                            icon: <UserCircle />,
+                            name: `${data.userCounts.all} 명`,
+                            label: '전체 유저수'
+                        }, {
+                            type: 'text',
+                            text: `${data.userCounts.plan.free} 명`,
+                            subText: 'Free 플랜'
+                        }, {
+                            type: 'text',
+                            text: `${data.userCounts.plan.pro} 명`,
+                            subText: 'pro 플랜'
+                        }, {
+                            type: 'text',
+                            text: `${data.userCounts.plan.proPlus} 명`,
+                            subText: 'proPlus 플랜'
+                        }, {
+                            type: 'text',
+                            text: `${data.userCounts.connected.connected} 명`,
+                            subText: '연결된 계정'
+                        }, {
+                            type: 'text',
+                            text: `${data.userCounts.connected.notConnected} 명`,
+                            subText: '연결되지 않은 계정'
+                        },
+                    ], [
+                        {
+                            type: 'avatar',
+                            icon: <Aperture />,
+                            name: `${data.calendar} 캘린더`,
+                            label: '캘린더'
+                        }, {
+                            type: 'text',
+                            text: `${data.event.toLocaleString()} 이벤트`,
+                            subText: '전체 이벤트'
+                        }, {
+                            type: 'text',
+                            text: `${data.money.toLocaleString()} 원`,
+                            subText: 'DB상 총 수익'
+                        }
+                    ]
+                ]} />
+            </FlexColumn> }
+        </StatisticBoxDiv>
+    )
+}
+
+export function DashboardChannel() {
     return (
         <TabDivver>
             <H1>{dayjs().format('MM월 DD일')} 대시보드</H1>
             <StatusBox />
+            <StatisticsBox />
         </TabDivver>
     )
 }

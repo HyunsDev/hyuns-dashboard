@@ -1,5 +1,5 @@
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
-import { PuzzlePiece, Bell, Database, Folder, HardDrives, PaperPlaneTilt, Nut  } from 'phosphor-react'
+import { PuzzlePiece, Bell, Database, Folder, HardDrives, PaperPlaneTilt, Nut, Bookmark  } from 'phosphor-react'
 
 import { DashboardChannel } from './dashboard/dashboard'
 import { VarChannel } from './var/varChannel'
@@ -13,6 +13,7 @@ import { useServer } from '../../../hooks/useServer'
 import { useEffect } from 'react'
 import { ToolsChannel } from './tools'
 import { useTitle } from '../../../hooks/modal/useTitle'
+import { BookmarkChannel } from './bookmark/bookmark'
 
 interface ChannelRouterProps {
 
@@ -70,6 +71,11 @@ export function ServerDash(props: ChannelRouterProps) {
                         to: 'tools',
                         icon: <Nut />
                     },
+                    bookmark: {
+                        name: '북마크',
+                        to: 'bookmark',
+                        icon: <Bookmark />
+                    },
                     lambda: {
                         name: 'Lambda',
                         to: 'lambda',
@@ -95,6 +101,7 @@ export function ServerDash(props: ChannelRouterProps) {
                 <Route path='/lambda/*' element={<LambdaChannel />} />
                 <Route path='/server/*' element={<ServerChannel />} />
                 <Route path='/message/*' element={<MessageChannel />} />
+                <Route path='/bookmark/*' element={<BookmarkChannel />} />
                 <Route path='/tools/*' element={<ToolsChannel />} />
                 <Route path='/*' element={<DashboardChannel />} />
             </Routes>

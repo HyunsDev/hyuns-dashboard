@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { Gear } from 'phosphor-react'
+import { Gear, SignOut } from 'phosphor-react'
 import { ToolTip } from "../../Tooltip/tooltip";
+import { ActionMenu } from "../../actionMenu";
 
 interface UserInfoProps {
     title: string;
@@ -57,11 +58,6 @@ const SettingDivver = styled.div`
     transition: 100ms;
     width: 28px;
     height: 28px;
-
-    background-color: var(--gray1);
-    &:hover {
-        background-color: var(--gray3);
-    }
 `
 
 const logout = () => {
@@ -82,12 +78,16 @@ export function UserInfo(props: UserInfoProps) {
                 </UserNameDivver>
             </UserInfoDivver>
             
-            <ToolTip text="로그아웃" direction="top">
-                <SettingDivver onClick={logout}>
-                    <Gear color="var(--gray5)" weight="fill" size={20} />
-                </SettingDivver>
-            </ToolTip>
-            
+            <SettingDivver>
+                <ActionMenu icon={<Gear weight="fill" color="var(--gray5)"/>} actions={[[
+                    {
+                        label: '로그아웃',
+                        onClick: logout,
+                        icon: <SignOut />,
+                        color: 'red'
+                    }
+                ]]} />
+            </SettingDivver>
         </Divver>
     )
 }
