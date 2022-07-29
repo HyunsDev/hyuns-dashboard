@@ -26,21 +26,6 @@ const Bar = styled.div`
     justify-content: space-between;
 `
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export function MessageTab() {
     const modal = useContext(ModalContext)
     const progress = useContext(TopLoadingContext)

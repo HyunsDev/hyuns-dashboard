@@ -1,5 +1,5 @@
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
-import { PuzzlePiece, Bell, Database, Folder, HardDrives, PaperPlaneTilt  } from 'phosphor-react'
+import { PuzzlePiece, Bell, Database, Folder, HardDrives, PaperPlaneTilt, Nut  } from 'phosphor-react'
 
 import { DashboardChannel } from './dashboard'
 
@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import { useServer } from '../../../hooks/useServer'
 import { useEffect } from 'react'
 import { useTitle } from '../../../hooks/modal/useTitle'
+import { ToolsChannel } from './tools'
 
 interface ChannelRouterProps {
 
@@ -43,7 +44,12 @@ export function ServerCalendar2notion(props: ChannelRouterProps) {
                         name: '대시보드',
                         to: '',
                         icon: <PuzzlePiece />
-                    },
+                    }, 
+                    tools: {
+                        name: '도구',
+                        to: 'tools',
+                        icon: <Nut />
+                    }
                 }
             ]
         })
@@ -52,6 +58,7 @@ export function ServerCalendar2notion(props: ChannelRouterProps) {
     return (
         <Divver>
             <Routes>
+                <Route path='/tools/*' element={<ToolsChannel />} />
                 <Route path='/*' element={<DashboardChannel />} />
             </Routes>
         </Divver>

@@ -1,5 +1,5 @@
 import { useCallback, useContext, useState } from "react";
-import {  Code as CodeIcon, X, Pencil } from 'phosphor-react'
+import {  Code as CodeIcon, X, Pencil, Eye } from 'phosphor-react'
 import styled from "styled-components";
 import { SearchBox } from "../../../../components/search/searchBox";
 import { useQuery } from "react-query";
@@ -15,6 +15,7 @@ import { ModalTitle, ModalTitleBox } from "../../../../components/Modal/Header";
 import { Code } from "../../../../components/code/code";
 import { FlexRow, Items } from "../../../../components";
 import dayjs from "dayjs";
+import { useCodeModal } from "../../../../hooks/modal/useModal";
 
 
 const Divver = styled.div`
@@ -30,10 +31,15 @@ const Buttons = styled.div`
     gap: 8px;
 `
 
+const Pre = styled.pre`
+    font-size: 14px;
+`
+
 export function VarChannel() {
     const [ searchText, setSearchText ] = useState('')
     const [ isShowPrivateVar, setShowPrivateVar ] = useState(localStorage.getItem('dash/isShowPrivateVar') === 'show')
     const modal = useContext(ModalContext)
+    const codeModal = useCodeModal()
 
     const { isLoading: varLoading, data: varData, refetch } = useQuery(['var'], async () => {
         const res = await axios.get(`${process.env.REACT_APP_API_URL}/var`, {
@@ -67,7 +73,9 @@ export function VarChannel() {
             <ModalTitleBox>
                 <ModalTitle>변수 정보</ModalTitle>
             </ModalTitleBox>
-            <Code>{JSON.stringify(value, null, 2)}</Code>
+            <Pre>
+                {value.value}
+            </Pre>
         </>)
     }, [modal])
 
@@ -94,9 +102,14 @@ export function VarChannel() {
             button: [
                 [
                     {
+                        label: '내용',
+                        icon: <Eye />,
+                        onClick: () => showVar(item)
+                    },
+                    {
                         label: 'Raw 보기',
                         icon: <CodeIcon />,
-                        onClick: () => showVar(item)
+                        onClick: () => codeModal(`${item.key}`, item)
                     },
                     {
                         label: '수정',

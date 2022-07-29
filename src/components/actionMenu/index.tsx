@@ -24,9 +24,20 @@ const ButtonDiv = styled.div<{isOpen: boolean, onlyIcon: boolean}>`
     }
 `
 
-const FadeIn = keyframes`
+const FadeInFromTop = keyframes`
     0% {
         transform: translateY(-5px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+`
+
+const FadeInFromBottom = keyframes`
+    0% {
+        transform: translateY(5px);
         opacity: 0;
     }
     100% {
@@ -52,7 +63,7 @@ const OverlayDiv = styled.div<{top?: number, right?: number; bottom?: number, le
     z-index: 10;
     border-radius: 8px;
     border: solid 1px var(--gray3);
-    animation: ${FadeIn} 180ms cubic-bezier(0.07, 0.75, 0.54, 0.93);
+    animation: ${props => props.top !== undefined ? FadeInFromTop : FadeInFromBottom} 180ms cubic-bezier(0.07, 0.75, 0.54, 0.93);
 `
 
 const ActionsDiv = styled.div`
@@ -159,8 +170,6 @@ export function ActionMenu({actions, label, icon}: {
 
         setDirection(pos)
     }, [])
-
-    console.log(direction)
 
     const ActionClick = (onClick: Function) => {
         setIsOpen(false)
