@@ -6,15 +6,12 @@ import { useQuery } from "react-query";
 import axios from "axios";
 
 import { H1, TabDivver } from "../../../../components/Tab";
-import { Button, Checkbox } from "../../../../components/Input";
+import { Button } from "../../../../components/Input";
 import { ModalContext } from "../../../../context/modalContext";
 import { CreateModalView } from "./createModal";
 import { RemoveModalView } from "./removeModal";
 import { EditModalView } from "./editModal";
-import { ModalTitle, ModalTitleBox } from "../../../../components/Modal/Header";
-import { Code } from "../../../../components/code/code";
 import { FlexRow, Items } from "../../../../components";
-import dayjs from "dayjs";
 import { useCodeModal } from "../../../../hooks/modal/useModal";
 import { ExecuteModalView } from "./executeModal";
 

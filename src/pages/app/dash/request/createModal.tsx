@@ -1,5 +1,5 @@
 import { ModalTitle, ModalTitleBox } from "../../../../components/Modal/Header";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import axios from "axios";
 import { useContext } from "react";
