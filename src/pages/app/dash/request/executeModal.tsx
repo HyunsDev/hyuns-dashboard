@@ -1,10 +1,9 @@
 import { ModalTitle, ModalTitleBox } from "../../../../components/Modal/Header";
 import styled from "styled-components";
 import axios from "axios";
-import { useContext, useState } from "react";
-import { TopLoadingContext } from "../../../../context/topLoadingBarContext";
+import { useState } from "react";
 import { toast } from "react-toastify";
-import { Button, CodeBlock, Flex, StatusBadge } from "opize-design-system";
+import { Button, Flex, StatusBadge } from "opize-design-system";
 import { Code } from "../../../../components";
 
 interface ModalViewProps {
