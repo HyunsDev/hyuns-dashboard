@@ -18,7 +18,7 @@
     "event-source-polyfill": "^1.0.26",
     "hyuns-api-v2-client": "^0.1.1",
     "jose": "^4.8.3",
-    "opize-design-system": "^0.16.3",
+    "opize-design-system": "0.16.4",
     "phosphor-react": "^1.4.1",
     "react": "18.2.0",
     "react-dom": "^18.1.0",
