@@ -171,7 +171,7 @@ export function ImageChannel() {
             Size: number;
             StorageClass: string;
         }[] = res.data.fileList.Contents;
-        return content.filter((e) => e.Key.endsWith(".png"));
+        return content;
     });
 
     const createVar = () => {
@@ -189,9 +189,11 @@ export function ImageChannel() {
                     <Button onClick={createVar}>리소스 업로드</Button>
                 </Buttons>
                 <ImageGrid>
-                    {data?.map((e) => (
-                        <Image {...e} refetch={refetch} />
-                    ))}
+                    {data
+                        ?.filter((e) => e.Key.endsWith(".png"))
+                        .map((e) => (
+                            <Image {...e} refetch={refetch} />
+                        ))}
                 </ImageGrid>
             </TabDivver>
         </Divver>
