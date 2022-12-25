@@ -10,6 +10,7 @@ import {
     Bookmark,
     GoogleChromeLogo,
     Image,
+    Lock,
 } from "phosphor-react";
 
 import { DashboardChannel } from "./dashboard/dashboard";
@@ -27,6 +28,7 @@ import { useTitle } from "../../../hooks/modal/useTitle";
 import { BookmarkChannel } from "./bookmark/bookmark";
 import { RequestChannel } from "./request/requestChannel";
 import { ImageChannel } from "./image/imageChannel";
+import { EnvChannel } from "./env/envChannel";
 
 interface ChannelRouterProps {}
 
@@ -71,6 +73,11 @@ export function ServerDash(props: ChannelRouterProps) {
                         name: "변수",
                         to: "var",
                         icon: <Database />,
+                    },
+                    env: {
+                        name: "환경변수",
+                        to: "env",
+                        icon: <Lock />,
                     },
                     resource: {
                         name: "리소스",
@@ -118,6 +125,7 @@ export function ServerDash(props: ChannelRouterProps) {
         <Divver>
             <Routes>
                 <Route path="/var/*" element={<VarChannel />} />
+                <Route path="/env/*" element={<EnvChannel />} />
                 <Route path="/resource/*" element={<ResourceChannel />} />
                 <Route path="/image/*" element={<ImageChannel />} />
                 <Route path="/lambda/*" element={<LambdaChannel />} />
