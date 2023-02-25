@@ -4138,6 +4138,15 @@ encodeurl@~1.0.2:
   resolved "https://registry.yarnpkg.com/encodeurl/-/encodeurl-1.0.2.tgz#ad3ff4c86ec2d029322f5a02c3a9a606c95b3f59"
   integrity sha1-rT/0yG7C0CkyL1oCw6mmBslbP1k=
 
+endpoint-client@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/endpoint-client/-/endpoint-client-0.1.1.tgz#49d828f9c079006cf39e79c92b5e26f82cb39d32"
+  integrity sha512-/Cgbj2XOtuMBGLj3y5goqgOVEj9Pp+o0oI4N9PIK17Am+yuuWt8y4IO4Z/lHKiApU1XRRsSglkiqy3GZ3GzTog==
+  dependencies:
+    axios "^0.27.2"
+    dayjs "^1.11.5"
+    dotenv "^16.0.1"
+
 enhanced-resolve@^5.9.3:
   version "5.9.3"
   resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.9.3.tgz#44a342c012cbc473254af5cc6ae20ebd0aae5d88"
@@ -5242,14 +5251,15 @@ human-signals@^2.1.0:
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-2.1.0.tgz#dc91fcba42e4d06e4abaed33b3e7a3c02f514ea0"
   integrity sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==
 
-hyuns-api-v2-client@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/hyuns-api-v2-client/-/hyuns-api-v2-client-0.1.1.tgz#16b13348fbbe6655f4adcb28264813e4b4d55ae3"
-  integrity sha512-7zZcmEhiW9E1uZTi0BTndGghVbIDKC6DHLeSXt8QKWlfBx+opuyERBKgCRCvCYmWoAGrGY45gsYUV2wYqPLxEQ==
+hyuns-api-v2-client@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/hyuns-api-v2-client/-/hyuns-api-v2-client-0.2.1.tgz#cb15df5c0314733c3fb5759b24efcb7df692c80b"
+  integrity sha512-bEOU1Bsi9bzz7MtszYuiYY3qRCdRwhRBOPZrby587VdEyFrSDyTUS3j89jAUf8/xykRsREV4mSb7gp4harOTfg==
   dependencies:
     axios "^0.27.2"
     dayjs "^1.11.5"
     dotenv "^16.0.1"
+    endpoint-client "^0.1.1"
 
 iconv-lite@0.4.24:
   version "0.4.24"
@@ -6813,10 +6823,10 @@ open@^8.0.9, open@^8.4.0:
     is-docker "^2.1.1"
     is-wsl "^2.2.0"
 
-opize-design-system@0.16.4:
-  version "0.16.4"
-  resolved "https://registry.yarnpkg.com/opize-design-system/-/opize-design-system-0.16.4.tgz#e682f30cc9d0f491bd029ce746f5679213f1b121"
-  integrity sha512-17mHbcIGOWAjoKBI5/pn2FWC78St3aWX2ZG+54ZfKzkZdiLOOyhfMEa07r41+Un9DTUVwl0ZjZSeOCGlUL+xEA==
+opize-design-system@^0.19.0:
+  version "0.19.0"
+  resolved "https://registry.yarnpkg.com/opize-design-system/-/opize-design-system-0.19.0.tgz#7ae45ce2b23bcf8d8ca3410dd0bb7c32fbbde537"
+  integrity sha512-Lzhx5UdNS4yK+w0cMd9r7NJf/QOktQduJhNcwp0yPXnO1HeB5EdeiSa4+tXyfxoZi2O/fyZFzSGvGOeh/NOLSg==
   dependencies:
     "@testing-library/jest-dom" "^5.14.1"
     "@testing-library/react" "^13.0.0"
